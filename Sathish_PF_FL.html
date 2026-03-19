@@ -433,8 +433,8 @@
         <span class="skill-tag">xAPI (Tin Can)</span>
         <span class="skill-tag">LMS Administration</span>
         <span class="skill-tag">WCAG / 508</span>
-      
-        <span class="skill-tag">HTML / CSS / JavaScript</span></div>
+        <span class="skill-tag">HTML / CSS / JavaScript</span>
+        <span class="skill-tag">GitHub</span></div>
     </div>
   </div>
 </section>
@@ -688,8 +688,419 @@
       </a>
     </div>
 
+    <div class="demo-card">
+      <div class="demo-num">07</div>
+      <div class="demo-type">Software Simulation</div>
+      <span class="demo-icon">🖥️</span>
+      <div class="demo-title">NexusCRM — View, Try &amp; Test Simulation</div>
+      <p class="demo-desc">3-mode software simulation: Watch a guided cursor demo (View), practise by clicking highlighted targets (Try), then prove mastery with a timed independent assessment (Test). Modes unlock sequentially.</p>
+      <div class="demo-tags">
+        <span class="demo-tag">Software Sim</span><span class="demo-tag">View·Try·Test</span><span class="demo-tag">3-Mode Learning</span>
+      </div>
+      <a class="demo-btn" href="https://saisathish26.github.io/Simulation/software-simulation-elearning" target="_blank" rel="noopener">
+        Launch
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
   </div>
 </section>
+
+<!-- ── SOFTWARE SIMULATION MODAL ── -->
+<div id="sim-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(10,10,14,0.92);align-items:center;justify-content:center;flex-direction:column;gap:12px;">
+  <div style="display:flex;align-items:center;justify-content:space-between;width:min(1300px,98vw);padding:0 4px;">
+    <span style="font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);">— NexusCRM Software Simulation</span>
+    <button onclick="closeSimModal()" style="background:rgba(245,240,232,.08);border:1px solid rgba(245,240,232,.15);color:rgba(245,240,232,.7);font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;padding:7px 18px;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='rgba(200,147,58,.18)';this.style.color='#e8b85a';" onmouseout="this.style.background='rgba(245,240,232,.08)';this.style.color='rgba(245,240,232,.7)';">✕ Close</button>
+  </div>
+  <iframe id="sim-frame" style="width:min(1300px,98vw);height:min(760px,90vh);border:1px solid rgba(200,147,58,.2);background:#090e1a;" frameborder="0" allowfullscreen></iframe>
+</div>
+
+<script>
+(function(){
+  var SIM_HTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Software Simulation: Add a Contact in NexusCRM</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:#090e1a;color:#e2e8f0;height:100vh;overflow:hidden;user-select:none}
+.shell{display:grid;grid-template-rows:54px 1fr 42px;height:100vh}
+.header{background:#0d1424;border-bottom:1px solid #1a2540;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.course-label{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#4a6280}
+.course-label span{color:#38bdf8}
+.mode-tabs{display:flex;gap:3px;background:#111927;border:1px solid #1a2540;border-radius:10px;padding:3px}
+.mtab{display:flex;align-items:center;gap:7px;padding:6px 16px;border-radius:7px;font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;border:none;background:none;color:#3d5270;transition:all .2s;font-family:'Outfit',sans-serif;position:relative}
+.mtab .lock{font-size:9px;opacity:.7}
+.mtab.view.active{background:#1d3a7a;color:#7eb8f7;box-shadow:0 0 12px #1d4ed844}
+.mtab.try.active{background:#7c3a00;color:#fbbf24;box-shadow:0 0 12px #b4530844}
+.mtab.test.active{background:#7f0a24;color:#fda4af;box-shadow:0 0 12px #be123c44}
+.mtab.view.done{background:#0a3320;color:#4ade80}
+.mtab.try.done{background:#3d2000;color:#fcd34d}
+.mtab.test.done{background:#3d0010;color:#fca5a5}
+.mtab.locked{cursor:not-allowed;opacity:.45}
+.hdr-right{font-size:.7rem;color:#2d4060;font-family:'DM Mono',monospace;min-width:90px;text-align:right}
+.main{display:grid;grid-template-columns:260px 1fr;overflow:hidden}
+.lpanel{background:#0b111f;border-right:1px solid #141e30;padding:18px 16px;display:flex;flex-direction:column;gap:14px;overflow:hidden}
+.mbadge{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:7px;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.mbadge.view{background:#1d4ed815;color:#60a5fa;border:1px solid #1d4ed830}
+.mbadge.try{background:#b4530815;color:#fbbf24;border:1px solid #b4530830}
+.mbadge.test{background:#be123c15;color:#fb7185;border:1px solid #be123c30}
+.panel-desc{font-size:.72rem;color:#3d5270;line-height:1.55;margin-top:2px}
+.step-row{display:flex;flex-direction:column;gap:7px}
+.step-lbl{font-size:.62rem;color:#2d4060;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.dots{display:flex;gap:5px}
+.dot{flex:1;height:4px;border-radius:99px;background:#141e30;transition:all .35s}
+.dot.done{background:#22c55e}
+.dot.active.view{background:#3b82f6}
+.dot.active.try{background:#f59e0b}
+.dot.active.test{background:#f43f5e}
+.icard{background:#111927;border-radius:10px;padding:14px 16px;border-left:3px solid #3b82f6}
+.icard.try{border-left-color:#f59e0b}
+.icard.test{border-left-color:#f43f5e}
+.ilabel{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#2d4060;margin-bottom:6px}
+.itext{font-size:.84rem;line-height:1.65;color:#8ca3c0}
+.itext strong{color:#c8d8e8}
+.fbmsg{padding:10px 14px;border-radius:9px;font-size:.8rem;line-height:1.5;display:none;font-family:'Outfit',sans-serif}
+.fbmsg.ok{background:#0a331a;border:1px solid #22c55e33;color:#4ade80;display:block}
+.fbmsg.err{background:#2d0808;border:1px solid #ef444433;color:#fca5a5;display:block}
+.ctrl-group{display:flex;flex-direction:column;gap:8px}
+.vbtn{background:#1d4ed8;color:#fff;border:none;border-radius:8px;padding:10px 16px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;letter-spacing:.04em;transition:all .2s}
+.vbtn:hover{background:#1e40af}.vbtn:disabled{opacity:.35;cursor:not-allowed}
+.hintbtn{background:#f59e0b10;border:1px solid #f59e0b30;color:#fbbf24;border-radius:8px;padding:8px 14px;font-size:.76rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all .2s;font-family:'Outfit',sans-serif}
+.hintbtn:hover{background:#f59e0b20}.hintbtn:disabled{opacity:.4;cursor:not-allowed}
+.hbadge{background:#f59e0b25;color:#fbbf24;border-radius:99px;padding:1px 8px;font-size:.65rem}
+.score-box{background:#111927;border-radius:10px;padding:12px 14px;text-align:center;border:1px solid #141e30}
+.score-num{font-size:1.9rem;font-weight:800;font-family:'DM Mono',monospace}
+.score-lbl{font-size:.65rem;color:#2d4060;margin-top:2px}
+.simarea{position:relative;background:#e8edf5;overflow:hidden}
+#cur{position:absolute;width:26px;height:26px;pointer-events:none;z-index:900;transition:left .75s cubic-bezier(.4,0,.2,1),top .75s cubic-bezier(.4,0,.2,1);display:none}
+#cur.on{display:block}
+#cur svg{filter:drop-shadow(1px 2px 4px rgba(0,0,0,.55))}
+.cring{position:absolute;width:38px;height:38px;border-radius:50%;border:2px solid #60a5fa;top:-6px;left:-6px;opacity:0;pointer-events:none}
+.cring.click{animation:cringAnim .5s ease-out forwards}
+@keyframes cringAnim{0%{transform:scale(.4);opacity:1}100%{transform:scale(2);opacity:0}}
+#callout{position:absolute;background:#09111f;border:1px solid #3b82f640;border-radius:11px;padding:12px 16px;max-width:240px;z-index:850;display:none;pointer-events:none;box-shadow:0 8px 32px rgba(0,0,0,.6)}
+#callout.on{display:block}
+.callout-step{font-size:.58rem;color:#3b82f6;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+.callout-body{font-size:.78rem;color:#94b4d0;line-height:1.5}
+.wflash{position:absolute;inset:0;background:#ef444418;pointer-events:none;z-index:800;opacity:0}
+.wflash.go{animation:wf .45s ease-out forwards}
+@keyframes wf{0%{opacity:1}100%{opacity:0}}
+.sticker{position:absolute;top:14px;left:50%;transform:translateX(-50%) translateY(-70px);background:#0a3320;border:1px solid #22c55e44;color:#4ade80;padding:8px 20px;border-radius:99px;font-size:.78rem;font-weight:600;z-index:810;transition:transform .3s ease;white-space:nowrap;font-family:'Outfit',sans-serif}
+.sticker.show{transform:translateX(-50%) translateY(0)}
+.cmplt{position:absolute;inset:0;background:rgba(5,10,20,.88);display:none;align-items:center;justify-content:center;z-index:1000}
+.cmplt.on{display:flex}
+.cmplt-card{background:#0d1424;border:1px solid #1a2540;border-radius:18px;padding:36px 40px;text-align:center;max-width:360px;width:90%}
+.cmplt-icon{font-size:2.8rem;margin-bottom:14px}
+.cmplt-title{font-size:1.3rem;font-weight:800;color:#f1f5f9;margin-bottom:8px}
+.cmplt-msg{font-size:.82rem;color:#4a6280;line-height:1.65;margin-bottom:20px}
+.cmplt-msg strong{color:#8ca3c0}
+.cmplt-stats{display:flex;gap:20px;justify-content:center;margin-bottom:22px}
+.cstat{text-align:center}
+.cstat-n{font-size:1.7rem;font-weight:800;font-family:'DM Mono',monospace}
+.cstat-l{font-size:.65rem;color:#2d4060;margin-top:2px}
+.cmplt-btn{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;border-radius:9px;padding:11px 24px;font-size:.84rem;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;width:100%;transition:filter .2s}
+.cmplt-btn:hover{filter:brightness(1.1)}
+.cmplt-btn.secondary{background:#0f172a;border:1px solid #1e293b;color:#64748b;margin-top:8px}
+.cmplt-btn.secondary:hover{border-color:#3b82f6;color:#60a5fa}
+.crm{width:100%;height:100%;display:flex;font-family:'DM Mono',monospace}
+.crm-sb{width:210px;background:#12202f;display:flex;flex-direction:column;flex-shrink:0;border-right:1px solid #1a2e42}
+.crm-logo{padding:16px 16px 14px;border-bottom:1px solid #1a2e42}
+.crm-logo-t{font-size:.95rem;font-weight:700;color:#e2e8f0;letter-spacing:-.02em}
+.crm-logo-t span{color:#38bdf8}
+.crm-logo-s{font-size:.58rem;color:#2d4a60;margin-top:1px;letter-spacing:.04em}
+.crm-nav{padding:10px 0;flex:1}
+.nitem{display:flex;align-items:center;gap:9px;padding:9px 16px;font-size:.73rem;color:#3d6280;cursor:pointer;transition:all .15s;border-left:3px solid transparent;letter-spacing:.02em}
+.nitem:hover{background:#1a2e42;color:#8ca3c0}
+.nitem.active{background:#0a1520;color:#38bdf8;border-left-color:#38bdf8}
+.nitem.pulse{animation:npulse 1.4s ease-in-out infinite}
+@keyframes npulse{0%,100%{background:#1a3050;color:#60a5fa}50%{background:#1a4070;color:#93c5fd;box-shadow:0 0 0 1px #3b82f630 inset}}
+.ni{font-size:13px;width:14px;text-align:center}
+.crm-main{flex:1;display:flex;flex-direction:column;background:#f0f4f8;overflow:hidden}
+.crm-top{background:#fff;border-bottom:1px solid #dde3ea;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;height:52px;flex-shrink:0}
+.crm-ptitle{font-size:.88rem;font-weight:700;color:#0f172a;letter-spacing:-.02em}
+.crm-psub{font-size:.62rem;color:#94a3b8;margin-top:1px}
+.crm-actions{display:flex;gap:8px;align-items:center}
+.btn-nc{background:#2563eb;color:#fff;border:none;border-radius:7px;padding:6px 12px;font-size:.68rem;font-weight:600;cursor:pointer;font-family:'DM Mono',monospace;display:flex;align-items:center;gap:5px;transition:all .2s;letter-spacing:.01em}
+.btn-nc:hover{background:#1d4ed8}
+.btn-nc.pulse{animation:btnpulse 1.2s ease-in-out infinite}
+@keyframes btnpulse{0%,100%{box-shadow:0 0 0 2px #3b82f640}50%{box-shadow:0 0 0 6px #3b82f620}}
+.crm-content{flex:1;padding:20px;overflow-y:auto}
+.dgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.dcard{background:#fff;border-radius:9px;padding:14px 16px;border:1px solid #dde3ea}
+.dlbl{font-size:.58rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.1em;font-weight:700}
+.dval{font-size:1.7rem;font-weight:800;color:#0f172a;margin-top:3px;font-family:'Outfit',sans-serif}
+.dchg{font-size:.62rem;color:#22c55e;margin-top:3px}
+.dhint{background:#fff;border-radius:9px;border:1px solid #dde3ea;padding:24px;text-align:center;color:#94a3b8;font-size:.75rem}
+.dhint-arrow{font-size:1.6rem;margin-bottom:6px}
+.ctable{background:#fff;border-radius:9px;border:1px solid #dde3ea;overflow:hidden}
+.cthead{display:grid;grid-template-columns:2fr 2fr 1.5fr 1fr;padding:9px 14px;background:#f8fafc;border-bottom:1px solid #e8edf4;font-size:.6rem;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+.crow{display:grid;grid-template-columns:2fr 2fr 1.5fr 1fr;padding:10px 14px;border-bottom:1px solid #f1f5f9;align-items:center;font-size:.72rem;color:#374151;transition:background .1s}
+.crow:last-child{border-bottom:none}
+.crow:hover{background:#f8fafc}
+.cname{font-weight:600;color:#0f172a;display:flex;align-items:center;gap:7px}
+.cavatar{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.58rem;font-weight:700;color:#fff;flex-shrink:0}
+.sbadge{display:inline-block;padding:2px 8px;border-radius:99px;font-size:.6rem;font-weight:700}
+.sbadge.active{background:#dcfce7;color:#16a34a}
+.sbadge.lead{background:#dbeafe;color:#1d4ed8}
+.sbadge.new{background:#fef9c3;color:#854d0e}
+.foverlay{position:absolute;inset:0;background:rgba(0,0,0,.38);display:none;z-index:10}
+.foverlay.on{display:block}
+.fform{position:absolute;top:0;right:0;bottom:0;width:330px;background:#fff;padding:22px 20px;overflow-y:auto;display:flex;flex-direction:column;gap:13px;box-shadow:-6px 0 28px rgba(0,0,0,.22);transform:translateX(100%);transition:transform .32s ease}
+.fform.open{transform:translateX(0)}
+.fhdr{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid #e8edf4}
+.ftitle{font-size:.88rem;font-weight:700;color:#0f172a;font-family:'Outfit',sans-serif}
+.fclose{background:#f1f5f9;border:none;width:26px;height:26px;border-radius:6px;cursor:pointer;font-size:13px;color:#64748b;display:flex;align-items:center;justify-content:center}
+.fgrp{display:flex;flex-direction:column;gap:4px}
+.flbl{font-size:.62rem;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:.06em}
+.flbl .req{color:#ef4444}
+.finput{padding:8px 10px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:.76rem;font-family:'DM Mono',monospace;color:#0f172a;background:#f8fafc;transition:all .2s;outline:none;cursor:default;min-height:34px;display:flex;align-items:center}
+.finput.pulse{animation:fpulse 1.2s ease-in-out infinite}
+@keyframes fpulse{0%,100%{border-color:#e2e8f0;box-shadow:none}50%{border-color:#3b82f6;box-shadow:0 0 0 4px #3b82f618}}
+.finput.focused{border-color:#3b82f6;background:#fff;box-shadow:0 0 0 3px #3b82f618}
+.finput.filled{border-color:#22c55e60;background:#f0fdf4}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fdiv{font-size:.6rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.1em;font-weight:700;padding:4px 0;border-top:1px solid #f1f5f9}
+.factions{display:flex;gap:9px;margin-top:auto;padding-top:4px}
+.fbtncancel{background:#f1f5f9;color:#64748b;border:none;border-radius:7px;padding:9px 12px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:'DM Mono',monospace}
+.fbtnsave{flex:1;background:#2563eb;color:#fff;border:none;border-radius:7px;padding:9px 14px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'DM Mono',monospace;transition:all .2s;letter-spacing:.02em}
+.fbtnsave:hover{background:#1d4ed8}
+.fbtnsave.pulse{animation:savepulse 1.2s ease-in-out infinite}
+@keyframes savepulse{0%,100%{box-shadow:0 0 0 0 #2563eb40}50%{box-shadow:0 0 0 6px #2563eb18}}
+.footer{background:#0a0f1e;border-top:1px solid #111927;padding:0 20px;display:flex;align-items:center;justify-content:space-between;font-size:.66rem;color:#1e3050}
+.fstatus{display:flex;align-items:center;gap:20px}
+.fsi{display:flex;align-items:center;gap:6px}
+.fsdot{width:6px;height:6px;border-radius:50%;background:#1a2540;transition:background .4s}
+.fsdot.done{background:#22c55e}
+.fsdot.active{background:#3b82f6}
+.fsdot.try-active{background:#f59e0b}
+.fsdot.test-active{background:#ef4444}
+.timer-wrap{display:none;align-items:center;gap:6px;font-family:'DM Mono',monospace;color:#ef4444;font-weight:600;font-size:.72rem}
+.timer-wrap.on{display:flex}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="header">
+  <div class="course-label">Software Sim <span>/ NexusCRM: Add a Contact</span></div>
+  <div class="mode-tabs">
+    <button class="mtab view active" id="tab-view" onclick="switchMode('view')">&#128065; View</button>
+    <button class="mtab try locked" id="tab-try" onclick="switchMode('try')"><span class="lock" id="lk-try">&#128274;</span> Try</button>
+    <button class="mtab test locked" id="tab-test" onclick="switchMode('test')"><span class="lock" id="lk-test">&#128274;</span> Test</button>
+  </div>
+  <div class="hdr-right" id="hdr-right">Step 1 / 5</div>
+</header>
+<div class="main">
+  <aside class="lpanel">
+    <div>
+      <div class="mbadge view" id="mbadge">&#128065; VIEW MODE</div>
+      <p class="panel-desc" id="panel-desc">Watch the guided demonstration. Follow the animated cursor to learn each step.</p>
+    </div>
+    <div class="step-row">
+      <div class="step-lbl">Progress — Step <span id="stepnum">1</span> of 5</div>
+      <div class="dots">
+        <div class="dot active view" id="d0"></div>
+        <div class="dot" id="d1"></div>
+        <div class="dot" id="d2"></div>
+        <div class="dot" id="d3"></div>
+        <div class="dot" id="d4"></div>
+      </div>
+    </div>
+    <div class="icard" id="icard">
+      <div class="ilabel" id="ilabel">What to observe</div>
+      <div class="itext" id="itext">Watch the cursor navigate to <strong>Contacts</strong> in the sidebar.</div>
+    </div>
+    <div class="fbmsg" id="fbmsg"></div>
+    <div class="ctrl-group" id="vc">
+      <button class="vbtn" id="vnext" onclick="viewNext()">&#9654; Next Step</button>
+      <div style="font-size:.66rem;color:#1e3050;text-align:center;line-height:1.5">Click to advance through the demonstration</div>
+    </div>
+    <div class="ctrl-group" id="tc" style="display:none">
+      <button class="hintbtn" id="hintbtn" onclick="doHint()">&#128161; Show Hint <span class="hbadge" id="hleft">3 left</span></button>
+      <div style="font-size:.66rem;color:#1e3050;line-height:1.5">Click the correct element in the software to proceed.</div>
+    </div>
+    <div class="ctrl-group" id="xc" style="display:none">
+      <div style="font-size:.66rem;color:#1e3050;line-height:1.5">Complete the full task from memory. No hints or highlights available.</div>
+      <div class="score-box" id="xscore" style="display:none">
+        <div class="score-num" id="xwrong" style="color:#ef4444">0</div>
+        <div class="score-lbl">Wrong clicks</div>
+      </div>
+    </div>
+  </aside>
+  <div class="simarea" id="simarea">
+    <div class="wflash" id="wflash"></div>
+    <div class="sticker" id="sticker">&#10003; Correct!</div>
+    <div id="cur">
+      <svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 2 L20 13 L13 15 L10 23 Z" fill="white" stroke="#091525" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      <div class="cring" id="cring"></div>
+    </div>
+    <div id="callout">
+      <div class="callout-step">Step <span id="cstep">1</span></div>
+      <div class="callout-body" id="cbody">Click "Contacts" in the left navigation.</div>
+    </div>
+    <div class="crm" id="crm" onclick="appClick(event)">
+      <nav class="crm-sb">
+        <div class="crm-logo">
+          <div class="crm-logo-t">Nexus<span>CRM</span></div>
+          <div class="crm-logo-s">SALES PLATFORM v3.2</div>
+        </div>
+        <div class="crm-nav">
+          <div class="nitem active" id="nav-dashboard"><span class="ni">&#8862;</span>Dashboard</div>
+          <div class="nitem" id="nav-contacts"><span class="ni">&#128101;</span>Contacts</div>
+          <div class="nitem" id="nav-deals"><span class="ni">&#128188;</span>Deals</div>
+          <div class="nitem" id="nav-pipeline"><span class="ni">&#11041;</span>Pipeline</div>
+          <div class="nitem" id="nav-reports"><span class="ni">&#128202;</span>Reports</div>
+          <div class="nitem" id="nav-settings"><span class="ni">&#9881;</span>Settings</div>
+        </div>
+      </nav>
+      <div class="crm-main">
+        <div class="crm-top">
+          <div>
+            <div class="crm-ptitle" id="ptitle">Dashboard</div>
+            <div class="crm-psub" id="psub">Welcome back, Alex Chen</div>
+          </div>
+          <div class="crm-actions">
+            <button class="btn-nc" id="btn-new-contact" style="display:none">+ New Contact</button>
+            <div style="width:28px;height:28px;background:#1a3050;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:#4a7090">AC</div>
+          </div>
+        </div>
+        <div class="crm-content" id="pg-dashboard">
+          <div class="dgrid">
+            <div class="dcard"><div class="dlbl">Total Contacts</div><div class="dval">1,284</div><div class="dchg">&#8593; 12% this month</div></div>
+            <div class="dcard"><div class="dlbl">Open Deals</div><div class="dval">47</div><div class="dchg">&#8593; 8% this month</div></div>
+            <div class="dcard"><div class="dlbl">Revenue (MTD)</div><div class="dval">$84k</div><div class="dchg">&#8593; 23% this month</div></div>
+          </div>
+          <div class="dhint"><div class="dhint-arrow">&#8592;</div>Navigate to <strong>Contacts</strong> in the sidebar to begin</div>
+        </div>
+        <div class="crm-content" id="pg-contacts" style="display:none">
+          <div class="ctable">
+            <div class="cthead"><span>NAME</span><span>EMAIL</span><span>COMPANY</span><span>STATUS</span></div>
+            <div class="crow"><div class="cname"><div class="cavatar" style="background:#6366f1">JD</div>Jordan Davis</div><div>jordan@acme.com</div><div>Acme Corp</div><div><span class="sbadge active">Active</span></div></div>
+            <div class="crow"><div class="cname"><div class="cavatar" style="background:#0ea5e9">ML</div>Maria Lopez</div><div>m.lopez@techco.io</div><div>TechCo Inc</div><div><span class="sbadge lead">Lead</span></div></div>
+            <div class="crow"><div class="cname"><div class="cavatar" style="background:#f59e0b">RK</div>Raj Kumar</div><div>raj@globalfirm.com</div><div>Global Firm</div><div><span class="sbadge active">Active</span></div></div>
+            <div class="crow" id="saved-row" style="display:none"><div class="cname"><div class="cavatar" style="background:#22c55e">SC</div>Sarah Chen</div><div>sarah@techventures.com</div><div>Tech Ventures</div><div><span class="sbadge new">New &#10003;</span></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="foverlay" id="foverlay">
+        <div class="fform" id="fform">
+          <div class="fhdr">
+            <div class="ftitle">New Contact</div>
+            <button class="fclose">&#10005;</button>
+          </div>
+          <div class="frow">
+            <div class="fgrp">
+              <label class="flbl">First Name <span class="req">*</span></label>
+              <div class="finput" id="field-firstname">Sarah</div>
+            </div>
+            <div class="fgrp">
+              <label class="flbl">Last Name</label>
+              <div class="finput" id="field-lastname">Chen</div>
+            </div>
+          </div>
+          <div class="fgrp">
+            <label class="flbl">Email Address <span class="req">*</span></label>
+            <div class="finput" id="field-email">sarah@techventures.com</div>
+          </div>
+          <div class="fgrp">
+            <label class="flbl">Phone</label>
+            <div class="finput" id="field-phone">+1 (555) 490-2281</div>
+          </div>
+          <div class="fdiv">OPTIONAL</div>
+          <div class="fgrp">
+            <label class="flbl">Company</label>
+            <div class="finput" id="field-company">Tech Ventures Inc.</div>
+          </div>
+          <div class="fgrp">
+            <label class="flbl">Job Title</label>
+            <div class="finput">Product Manager</div>
+          </div>
+          <div class="factions">
+            <button class="fbtncancel">Cancel</button>
+            <button class="fbtnsave" id="btn-save">Save Contact</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cmplt" id="cmplt">
+      <div class="cmplt-card" id="cmplt-card"></div>
+    </div>
+  </div>
+</div>
+<footer class="footer">
+  <div class="fstatus">
+    <div class="fsi"><div class="fsdot active" id="ds-view"></div><span id="ls-view">View: Active</span></div>
+    <div class="fsi"><div class="fsdot" id="ds-try"></div><span id="ls-try">Try: Locked &#128274;</span></div>
+    <div class="fsi"><div class="fsdot" id="ds-test"></div><span id="ls-test">Test: Locked &#128274;</span></div>
+  </div>
+  <div class="timer-wrap" id="twrap">&#9201; <span id="tdisp">00:00</span></div>
+  <div>NexusCRM Simulation</div>
+</footer>
+</div>
+<script>
+var STEPS=[{targetId:'nav-contacts',instr:'Click <strong>Contacts</strong> in the left sidebar navigation.',callout:'Select "Contacts" from the left navigation menu to view the contacts list.',hint:'Look in the left sidebar — click the "Contacts" menu item.',toast:'&#10003; Navigated to Contacts!',appAfter:1},{targetId:'btn-new-contact',instr:'Click the <strong>+ New Contact</strong> button in the top-right toolbar.',callout:'Click the blue "+ New Contact" button to open the contact creation form.',hint:'Find the blue "+ New Contact" button in the top-right area of the screen.',toast:'&#10003; New Contact form opened!',appAfter:2},{targetId:'field-firstname',instr:'Click the <strong>First Name</strong> field to enter the contact\'s first name.',callout:'Click the "First Name" input field — the name will be entered automatically.',hint:'Click on the "First Name" field in the form panel on the right side.',toast:'&#10003; First Name entered!',appAfter:3},{targetId:'field-email',instr:'Click the <strong>Email Address</strong> field to enter the contact\'s email.',callout:'Click the "Email Address" field below the name fields.',hint:'Scroll down in the form and click the "Email Address" input field.',toast:'&#10003; Email address entered!',appAfter:4},{targetId:'btn-save',instr:'Click <strong>Save Contact</strong> to save and complete the process.',callout:'Click the blue "Save Contact" button at the bottom of the form to finish.',hint:'The blue "Save Contact" button is at the very bottom of the form.',toast:'&#10003; Contact saved!',appAfter:5}];
+var CUR_POS={'nav-contacts':{l:9,t:29},'btn-new-contact':{l:77,t:12},'field-firstname':{l:63,t:40},'field-email':{l:63,t:56},'btn-save':{l:72,t:88}};
+var mode='view',step=0,appSt=0,done={view:false,try:false,test:false},hints=3,wrongs=0,timerID=null,secs=0;
+window.addEventListener('load',function(){renderPanel();renderDots();renderApp();updateFooter();setTimeout(startView,500);});
+function switchMode(m){if(m==='try'&&!done.view)return;if(m==='test'&&!done.try)return;mode=m;step=0;appSt=0;hints=3;wrongs=0;clearInterval(timerID);hideCursor();hideCallout();removeHL();document.getElementById('cmplt').classList.remove('on');document.getElementById('sticker').classList.remove('show');document.getElementById('twrap').classList.remove('on');hideFb();renderTabs();renderPanel();renderDots();renderApp();updateFooter();if(m==='view'){setTimeout(startView,400);}if(m==='try'){applyHL(STEPS[step].targetId);document.getElementById('xscore').style.display='none';}if(m==='test'){document.getElementById('xscore').style.display='block';startTimer();}}
+function renderTabs(){['view','try','test'].forEach(function(m2){var t=document.getElementById('tab-'+m2);t.className='mtab '+m2;if(m2===mode)t.classList.add('active');else if(done[m2])t.classList.add('done');else if((m2==='try'&&!done.view)||(m2==='test'&&!done.try))t.classList.add('locked');});document.getElementById('lk-try').textContent=done.view?'':'&#128274;';document.getElementById('lk-test').textContent=done.try?'':'&#128274;';}
+function renderPanel(){var badge=document.getElementById('mbadge'),desc=document.getElementById('panel-desc'),card=document.getElementById('icard'),lbl=document.getElementById('ilabel'),txt=document.getElementById('itext'),vc=document.getElementById('vc'),tc=document.getElementById('tc'),xc=document.getElementById('xc');vc.style.display=tc.style.display=xc.style.display='none';if(mode==='view'){badge.className='mbadge view';badge.textContent='&#128065; VIEW MODE';desc.textContent='Watch the guided demonstration. Follow the animated cursor to learn each step.';card.className='icard';lbl.textContent='What to observe';txt.innerHTML=STEPS[step].instr;vc.style.display='flex';}else if(mode==='try'){badge.className='mbadge try';badge.textContent='&#9999; TRY MODE';desc.textContent='Now you try it. Click the highlighted element to complete each step.';card.className='icard try';lbl.textContent='Your task';txt.innerHTML=STEPS[step].instr;tc.style.display='flex';document.getElementById('hleft').textContent=hints+' left';}else{badge.className='mbadge test';badge.textContent='&#127919; TEST MODE';desc.textContent='Complete the full task independently. No hints or highlights.';card.className='icard test';lbl.textContent='Task to complete';txt.innerHTML='Add a new contact named <strong>Sarah Chen</strong> to NexusCRM. Complete all 5 steps correctly.';xc.style.display='flex';}document.getElementById('stepnum').textContent=step+1;document.getElementById('hdr-right').textContent=mode==='test'?'Test Mode':'Step '+(step+1)+' / 5';}
+function renderDots(){for(var i=0;i<5;i++){var d=document.getElementById('d'+i);d.className='dot';if(i<step)d.classList.add('done');else if(i===step){d.classList.add('active',mode);}}}
+function renderApp(){document.getElementById('nav-dashboard').className='nitem'+(appSt===0?' active':'');document.getElementById('nav-contacts').className='nitem'+(appSt>=1?' active':'');document.getElementById('pg-dashboard').style.display=appSt===0?'block':'none';document.getElementById('pg-contacts').style.display=appSt>=1?'block':'none';document.getElementById('ptitle').textContent=appSt>=1?'Contacts':'Dashboard';document.getElementById('psub').textContent=appSt>=1?'1,284 contacts · 3 shown':'Welcome back, Alex Chen';document.getElementById('btn-new-contact').style.display=appSt>=1?'flex':'none';var ov=document.getElementById('foverlay'),fm=document.getElementById('fform');if(appSt>=2){ov.classList.add('on');setTimeout(function(){fm.classList.add('open');},10);}else{ov.classList.remove('on');fm.classList.remove('open');}var fn=document.getElementById('field-firstname'),em=document.getElementById('field-email');fn.className='finput';em.className='finput';if(appSt===3){fn.classList.add('focused');setTimeout(function(){fn.classList.remove('focused');fn.classList.add('filled');},700);}else if(appSt>3)fn.classList.add('filled');if(appSt===4){em.classList.add('focused');setTimeout(function(){em.classList.remove('focused');em.classList.add('filled');},700);}else if(appSt>4)em.classList.add('filled');document.getElementById('saved-row').style.display=appSt>=5?'grid':'none';}
+function startView(){moveCursor(step);showCallout(step);}
+function viewNext(){if(step>=STEPS.length)return;clickAnim();setTimeout(function(){appSt=STEPS[step].appAfter;renderApp();step++;if(step>=STEPS.length){hideCursor();hideCallout();done.view=true;renderTabs();updateFooter();setTimeout(function(){showComplete('view');},600);return;}renderPanel();renderDots();setTimeout(function(){moveCursor(step);showCallout(step);},350);},620);}
+function moveCursor(s){var cur=document.getElementById('cur'),p=CUR_POS[STEPS[s].targetId];if(s===0){cur.style.left='6%';cur.style.top='55%';}cur.classList.add('on');setTimeout(function(){cur.style.left=p.l+'%';cur.style.top=p.t+'%';},80);}
+function clickAnim(){var r=document.getElementById('cring');r.className='cring';void r.offsetWidth;r.className='cring click';}
+function hideCursor(){document.getElementById('cur').classList.remove('on');}
+function showCallout(s){var el=document.getElementById('callout'),p=CUR_POS[STEPS[s].targetId];var cl=p.l+4,ct=p.t+5;if(cl>62)cl=p.l-26;if(ct>68)ct=p.t-18;el.style.left=cl+'%';el.style.top=ct+'%';document.getElementById('cstep').textContent=s+1;document.getElementById('cbody').textContent=STEPS[s].callout;el.classList.add('on');}
+function hideCallout(){document.getElementById('callout').classList.remove('on');}
+function appClick(e){if(mode==='view')return;var t=e.target,tid=t.id||(t.closest('[id]')?t.closest('[id]').id:'')||'',expected=STEPS[step]?STEPS[step].targetId:'';var structural=['crm','foverlay','pg-dashboard','pg-contacts','crm-main','crm-sb','crm-top','crm-nav','crm-logo','dgrid','ctable','cthead','crm-content','fform','fhdr','factions','frow','fgrp'];if(!tid||structural.some(function(x){return tid===x;})||t.tagName==='NAV'||(t.tagName==='DIV'&&!expected))return;if(tid===expected){correctClick();}else if(['btn-new-contact','btn-save','nav-contacts','nav-deals','nav-pipeline','nav-reports','nav-settings','nav-dashboard','field-firstname','field-email','field-phone','field-company','field-lastname'].indexOf(tid)>-1){wrongClick();}}
+function correctClick(){removeHL();hideCallout();appSt=STEPS[step].appAfter;renderApp();toast(STEPS[step].toast);if(mode==='try')showFb(STEPS[step].toast,'ok');step++;if(step>=STEPS.length){done[mode]=true;renderTabs();updateFooter();if(mode==='test')clearInterval(timerID);setTimeout(function(){showComplete(mode);},900);return;}renderPanel();renderDots();setTimeout(function(){hideFb();if(mode==='try')applyHL(STEPS[step].targetId);},1100);}
+function wrongClick(){wrongs++;document.getElementById('xwrong').textContent=wrongs;flashWrong();if(mode==='try'){showFb('&#10060; Not quite. Try again.','err');setTimeout(hideFb,2000);}}
+function flashWrong(){var f=document.getElementById('wflash');f.className='wflash';void f.offsetWidth;f.className='wflash go';}
+function applyHL(id){removeHL();var el=document.getElementById(id);if(el)el.classList.add('pulse');}
+function removeHL(){document.querySelectorAll('.pulse').forEach(function(el){el.classList.remove('pulse');});}
+function doHint(){if(hints<=0)return;hints--;var hb=document.getElementById('hintbtn');document.getElementById('hleft').textContent=hints+' left';if(hints===0)hb.disabled=true;showFb('&#128161; '+STEPS[step].hint,'ok');var el=document.getElementById(STEPS[step].targetId);if(el){el.style.outline='3px solid #f59e0b';el.style.outlineOffset='3px';setTimeout(function(){el.style.outline='';el.style.outlineOffset='';},2200);}setTimeout(hideFb,3500);}
+function showFb(msg,type){var el=document.getElementById('fbmsg');el.innerHTML=msg;el.className='fbmsg '+type;}
+function hideFb(){document.getElementById('fbmsg').className='fbmsg';}
+function toast(msg){var el=document.getElementById('sticker');el.textContent=msg;el.classList.add('show');setTimeout(function(){el.classList.remove('show');},2200);}
+function startTimer(){secs=0;document.getElementById('twrap').classList.add('on');clearInterval(timerID);timerID=setInterval(function(){secs++;var m=String(Math.floor(secs/60)).padStart(2,'0'),s=String(secs%60).padStart(2,'0');document.getElementById('tdisp').textContent=m+':'+s;},1000);}
+function showComplete(m){hideCursor();hideCallout();removeHL();var ov=document.getElementById('cmplt'),card=document.getElementById('cmplt-card'),tm=String(Math.floor(secs/60)).padStart(2,'0')+':'+String(secs%60).padStart(2,'0'),icon,title,msg,stats='',btn1,btn2='';if(m==='view'){icon='&#128065;';title='View Complete!';msg='You have watched the full demonstration across all 5 steps. Now switch to <strong>Try Mode</strong> to practise the steps yourself.';btn1='<button class="cmplt-btn" onclick="closeAndSwitch(\'try\')">Start Try Mode &#8594;</button>';}else if(m==='try'){icon='&#9999;&#65039;';title='Try Mode Complete!';msg='You completed all 5 steps with <strong>'+wrongs+' wrong click'+(wrongs!==1?'s':'')+'</strong>. Switch to <strong>Test Mode</strong> — no hints this time!';stats='<div class="cmplt-stats"><div class="cstat"><div class="cstat-n" style="color:'+(wrongs===0?'#22c55e':wrongs<=3?'#f59e0b':'#ef4444')+'">'+wrongs+'</div><div class="cstat-l">Wrong Clicks</div></div></div>';btn1='<button class="cmplt-btn" onclick="closeAndSwitch(\'test\')">Start Test Mode &#8594;</button>';btn2='<button class="cmplt-btn secondary" onclick="closeAndSwitch(\'try\')">&#8617; Retry Try Mode</button>';}else{var grade=wrongs===0?'Perfect Score! &#127942;':wrongs<=2?'Great Job! &#9989;':wrongs<=5?'Good Work &#10003;':'Complete &#10003;',gc=wrongs===0?'#22c55e':wrongs<=2?'#4ade80':wrongs<=5?'#f59e0b':'#ef4444';icon=wrongs===0?'&#127942;':'&#9989;';title=grade;msg='You successfully completed the NexusCRM contact workflow!';stats='<div class="cmplt-stats"><div class="cstat"><div class="cstat-n" style="color:'+gc+'">'+wrongs+'</div><div class="cstat-l">Wrong Clicks</div></div><div class="cstat"><div class="cstat-n" style="color:#38bdf8">'+tm+'</div><div class="cstat-l">Time</div></div><div class="cstat"><div class="cstat-n" style="color:#a78bfa">5/5</div><div class="cstat-l">Steps Done</div></div></div>';btn1='<button class="cmplt-btn" onclick="restartAll()">&#8617; Restart All Modes</button>';btn2='<button class="cmplt-btn secondary" onclick="closeAndSwitch(\'test\')">Retry Test Mode</button>';}card.innerHTML='<div class="cmplt-icon">'+icon+'</div><div class="cmplt-title">'+title+'</div><div class="cmplt-msg">'+msg+'</div>'+stats+btn1+btn2;ov.classList.add('on');}
+function closeAndSwitch(m){document.getElementById('cmplt').classList.remove('on');setTimeout(function(){switchMode(m);},280);}
+function restartAll(){done={view:false,try:false,test:false};document.getElementById('cmplt').classList.remove('on');setTimeout(function(){switchMode('view');},280);}
+function updateFooter(){var cfg={view:{dot:'ds-view',lbl:'ls-view'},try:{dot:'ds-try',lbl:'ls-try'},test:{dot:'ds-test',lbl:'ls-test'}};['view','try','test'].forEach(function(m2){var dt=document.getElementById(cfg[m2].dot),lt=document.getElementById(cfg[m2].lbl),cap=m2.charAt(0).toUpperCase()+m2.slice(1);if(done[m2]){dt.className='fsdot done';lt.textContent=cap+': Complete &#10003;';}else if(m2===mode){dt.className='fsdot '+(m2==='view'?'active':m2==='try'?'try-active':'test-active');lt.textContent=cap+': Active';}else if((m2==='try'&&!done.view)||(m2==='test'&&!done.try)){dt.className='fsdot';lt.textContent=cap+': Locked &#128274;';}else{dt.className='fsdot';lt.textContent=cap+': Ready';}});}
+<\/script>
+</body>
+</html>`;
+
+  window.openSimModal = function() {
+    var modal = document.getElementById('sim-modal');
+    var frame = document.getElementById('sim-frame');
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    if (!frame.srcdoc) { frame.srcdoc = SIM_HTML; }
+  };
+
+  window.closeSimModal = function() {
+    var modal = document.getElementById('sim-modal');
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  };
+
+  // Close on backdrop click
+  document.getElementById('sim-modal').addEventListener('click', function(e) {
+    if (e.target === this) { window.closeSimModal(); }
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') { window.closeSimModal(); }
+  });
+})();
+</script>
 
 <section id="methodology">
   <div>
@@ -777,9 +1188,4 @@
 </section>
 
 <footer>
-  <span>© 2026 Sathishkumar Eswaramoorthy &nbsp;·&nbsp; Instructional Designer &nbsp;·&nbsp; Tempe, AZ</span>
-  <span>Authorized to work in the U.S.</span>
-</footer>
-
-</body>
-</html>
+  <span>© 2026 Sathishkumar Eswaramoorthy
