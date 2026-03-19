@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sathishkumar Eswaramoorthy — Instructional Designer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0e0c;
+    --cream: #f5f0e8;
+    --warm: #e8dfc8;
+    --gold: #c8933a;
+    --gold-light: #e8b85a;
+    --rust: #b84c2a;
+    --teal: #1a5c5a;
+    --teal-light: #2a8a86;
+    --text-muted: #6b6456;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(245, 240, 232, 0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(200, 147, 58, 0.2);
+  }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; letter-spacing: 0.02em; }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-family: 'DM Mono', monospace; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--gold); }
+
+  /* HERO */
+  .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; position: relative; overflow: hidden; }
+  .hero-left { display: flex; flex-direction: column; justify-content: center; padding: 8rem 3rem 4rem 4rem; position: relative; z-index: 2; }
+  .hero-tag { font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem; opacity: 0; animation: fadeUp 0.7s ease 0.1s forwards; }
+  .hero-tag::before { content: ''; width: 2rem; height: 1px; background: var(--gold); display: inline-block; }
+  .hero-name { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 5vw, 5.5rem); font-weight: 900; line-height: 1.0; letter-spacing: -0.02em; margin-bottom: 0.3rem; opacity: 0; animation: fadeUp 0.7s ease 0.25s forwards; }
+  .hero-name em { font-style: italic; color: var(--gold); }
+  .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(1.1rem, 1.8vw, 1.5rem); font-weight: 400; font-style: italic; color: var(--text-muted); margin-bottom: 2rem; margin-top: 0.5rem; opacity: 0; animation: fadeUp 0.7s ease 0.35s forwards; }
+  .hero-desc { font-size: 1rem; line-height: 1.75; color: #4a4540; max-width: 460px; margin-bottom: 3rem; opacity: 0; animation: fadeUp 0.7s ease 0.45s forwards; }
+  .hero-stats { display: flex; gap: 2.5rem; margin-bottom: 3rem; opacity: 0; animation: fadeUp 0.7s ease 0.55s forwards; }
+  .stat { display: flex; flex-direction: column; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: var(--ink); line-height: 1; }
+  .stat-label { font-family: 'DM Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-top: 0.3rem; }
+  .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.7s ease 0.65s forwards; }
+  .btn-primary { background: transparent; color: var(--ink); padding: 0.85rem 2rem; font-family: 'DM Mono', monospace; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; text-decoration: none; border: 1.5px solid var(--ink); cursor: pointer; transition: all 0.25s; display: inline-block; }
+  .btn-primary:hover { background: var(--ink); color: var(--cream); transform: translateY(-2px); }
+  .btn-outline { background: transparent; color: var(--ink); padding: 0.85rem 2rem; font-family: 'DM Mono', monospace; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; text-decoration: none; border: 1.5px solid var(--ink); cursor: pointer; transition: all 0.25s; display: inline-block; }
+  .btn-outline:hover { background: var(--ink); color: var(--cream); transform: translateY(-2px); }
+  .btn-teal { background: transparent; color: var(--ink); padding: 0.85rem 2rem; font-family: 'DM Mono', monospace; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; text-decoration: none; border: 1.5px solid var(--ink); cursor: pointer; transition: all 0.25s; display: inline-block; }
+  .btn-teal:hover { background: var(--ink); color: var(--cream); transform: translateY(-2px); }
+
+  /* HERO RIGHT — diagonal split with bold typography */
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+    background: var(--ink);
+  }
+  /* Diagonal colour split */
+  .hero-right::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(135deg,
+        var(--ink) 0%,
+        var(--ink) 52%,
+        #1a1008 52%,
+        #1a1008 100%);
+  }
+  /* Top-left gold accent bar */
+  .hr-accent-bar {
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(to bottom, var(--gold), var(--teal), transparent);
+    z-index: 3;
+  }
+  /* Large decorative initials watermark */
+  .hr-initials {
+    position: absolute;
+    top: -2rem; right: -1rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 18rem;
+    font-weight: 900;
+    line-height: 1;
+    color: rgba(200,147,58,0.06);
+    letter-spacing: -0.04em;
+    pointer-events: none;
+    z-index: 1;
+    user-select: none;
+  }
+  /* Content */
+  .hr-content {
+    position: relative;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    padding: 5rem 3rem 4rem 3.5rem;
+    gap: 2.5rem;
+  }
+  /* Quote block */
+  .hr-quote-wrap {
+    position: relative;
+  }
+  .hr-quote-mark {
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    color: var(--gold);
+    line-height: 0.5;
+    margin-bottom: 1rem;
+    display: block;
+    opacity: 0.7;
+  }
+  .hr-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-style: italic;
+    color: rgba(245,240,232,0.85);
+    line-height: 1.75;
+    border-left: 2px solid var(--gold);
+    padding-left: 1.3rem;
+  }
+  .hr-quote em {
+    color: var(--gold-light);
+    font-style: normal;
+  }
+  /* Award badge */
+  .award-badge {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(200,147,58,0.1);
+    border: 1px solid rgba(200,147,58,0.35);
+    border-left: 3px solid var(--gold);
+    padding: 1rem 1.2rem;
+  }
+  .award-icon { font-size: 1.4rem; flex-shrink: 0; }
+  .award-text strong {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.92rem;
+    color: var(--gold-light);
+    display: block;
+    margin-bottom: 0.2rem;
+    font-style: italic;
+  }
+  .award-text span {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    color: rgba(200,147,58,0.65);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  /* Bottom auth strip */
+  .hr-auth {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.35);
+    padding-top: 1rem;
+
+  }
+  .hr-auth::before {
+    content: '';
+    width: 20px; height: 1px;
+    background: var(--teal);
+    flex-shrink: 0;
+  }
+
+  /* SECTIONS */
+  section { padding: 6rem 4rem; }
+  .section-label { font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem; }
+  .section-label::after { content: ''; flex: 1; max-width: 4rem; height: 1px; background: var(--gold); }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; margin-bottom: 3rem; }
+
+  /* ABOUT */
+  #about { background: var(--warm); display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+  .about-text p { font-size: 1.05rem; line-height: 1.85; color: #3a342e; margin-bottom: 1.2rem; }
+  .about-right { display: flex; flex-direction: column; gap: 1.2rem; }
+  .pillar { padding: 1.5rem; background: var(--cream); border-left: 3px solid var(--gold); transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; }
+  .pillar:hover { transform: translateX(6px); box-shadow: -6px 0 0 var(--teal); border-color: var(--teal); }
+  .pillar h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .pillar p { font-size: 0.875rem; color: var(--text-muted); line-height: 1.5; }
+
+  /* SKILLS */
+  #skills { background: var(--ink); color: var(--cream); }
+  #skills .section-title { color: var(--cream); }
+  .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .skill-category { background: rgba(245, 240, 232, 0.05); border: 1px solid rgba(245, 240, 232, 0.1); padding: 2rem; transition: border-color 0.25s, background 0.25s; }
+  .skill-category:hover { border-color: var(--gold); background: rgba(200, 147, 58, 0.06); }
+  .skill-cat-title { font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; padding-bottom: 0.8rem; border-bottom: 1px solid rgba(200, 147, 58, 0.3); }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .skill-tag { font-size: 0.8rem; padding: 0.35rem 0.75rem; background: rgba(245, 240, 232, 0.08); color: rgba(245, 240, 232, 0.8); border: 1px solid rgba(245, 240, 232, 0.12); transition: all 0.2s; cursor: default; }
+  .skill-tag:hover { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+
+  /* EXPERIENCE */
+  #experience { background: var(--cream); }
+  .timeline { position: relative; padding-left: 2.5rem; }
+  .timeline::before { content: ''; position: absolute; left: 0; top: 0.5rem; bottom: 0; width: 1px; background: linear-gradient(to bottom, var(--gold), transparent); }
+  .job { position: relative; margin-bottom: 4rem; padding-bottom: 4rem; border-bottom: 1px solid rgba(200, 147, 58, 0.15); }
+  .job:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .job::before { content: ''; position: absolute; left: -2.9rem; top: 0.4rem; width: 10px; height: 10px; border-radius: 50%; background: var(--gold); border: 2px solid var(--cream); box-shadow: 0 0 0 2px var(--gold); }
+  .job-meta { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; }
+  .job-company { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; }
+  .job-period { font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; color: var(--text-muted); background: var(--warm); padding: 0.3rem 0.8rem; white-space: nowrap; }
+  .job-role { font-family: 'Playfair Display', serif; font-style: italic; color: var(--gold); font-size: 1rem; margin-bottom: 0.3rem; }
+  .job-client { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); margin-bottom: 1rem; }
+  .job-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1.2rem; font-style: italic; }
+  .job-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .job-bullets li { font-size: 0.9rem; line-height: 1.6; color: #3a342e; padding-left: 1.2rem; position: relative; }
+  .job-bullets li::before { content: '→'; position: absolute; left: 0; color: var(--gold); font-size: 0.8rem; }
+
+  /* PROJECTS */
+  #projects { background: var(--warm); }
+  .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+  .project-card { background: var(--cream); padding: 2.5rem; border: 1px solid rgba(200, 147, 58, 0.15); position: relative; overflow: hidden; transition: transform 0.25s, box-shadow 0.25s; }
+  .project-card::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 3px; background: var(--gold); transition: width 0.35s; }
+  .project-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(15, 14, 12, 0.12); }
+  .project-card:hover::after { width: 100%; }
+  .project-client { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
+  .project-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.8rem; }
+  .project-body { font-size: 0.875rem; line-height: 1.7; color: var(--text-muted); margin-bottom: 1.5rem; }
+  .project-tools { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .tool-chip { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.08em; padding: 0.25rem 0.6rem; background: var(--ink); color: var(--cream); text-transform: uppercase; }
+
+  /* METHODOLOGY */
+  #methodology { background: var(--ink); color: var(--cream); display: grid; grid-template-columns: 1fr 2fr; gap: 5rem; align-items: start; }
+  #methodology .section-title { color: var(--cream); }
+  .method-list { display: flex; flex-direction: column; gap: 1.5rem; }
+  .method-item { display: grid; grid-template-columns: 5.5rem 1fr; gap: 1.2rem; align-items: start; padding: 1.2rem 1.5rem; border: 1px solid rgba(245, 240, 232, 0.08); transition: border-color 0.25s; }
+  .method-item:hover { border-color: var(--gold); }
+  .method-abbr { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 900; color: var(--gold); line-height: 1.2; word-break: break-word; }
+  .method-name { font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 500; color: var(--cream); margin-bottom: 0.3rem; }
+  .method-desc { font-size: 0.82rem; color: rgba(245, 240, 232, 0.55); line-height: 1.6; }
+
+  /* EDUCATION */
+  #education { background: var(--cream); }
+  .edu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+  .edu-card { border: 1px solid rgba(200, 147, 58, 0.2); padding: 2rem; transition: border-color 0.25s, background 0.25s; }
+  .edu-card:hover { border-color: var(--teal); background: rgba(26, 92, 90, 0.03); }
+  .edu-degree { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .edu-school { font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.4rem; }
+  .edu-year { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; color: var(--gold); }
+  .cert-list { display: flex; flex-direction: column; gap: 1rem; }
+  .cert-item { display: flex; align-items: flex-start; gap: 1rem; padding: 1.2rem 1.5rem; background: var(--warm); border-left: 3px solid var(--teal); }
+  .cert-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 0.1rem; }
+  .cert-name { font-size: 0.9rem; font-weight: 500; }
+  .cert-issuer { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+  /* CONTACT */
+  #contact { background: var(--ink); color: var(--cream); text-align: center; padding: 8rem 4rem; position: relative; overflow: hidden; }
+  .contact-bg-text { position: absolute; font-family: 'Playfair Display', serif; font-size: 18vw; font-weight: 900; color: rgba(245, 240, 232, 0.03); top: 50%; left: 50%; transform: translate(-50%, -50%); white-space: nowrap; pointer-events: none; letter-spacing: -0.05em; }
+  #contact .section-title { color: var(--cream); font-size: clamp(2.5rem, 5vw, 4.5rem); }
+  #contact .section-label { justify-content: center; }
+  #contact .section-label::after { display: none; }
+  #contact .section-label::before { content: ''; flex: 1; max-width: 4rem; height: 1px; background: var(--gold); }
+  .contact-links { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-top: 3rem; position: relative; z-index: 2; }
+  .contact-link { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; text-decoration: none; color: var(--cream); padding: 1.5rem 2rem; border: 1px solid rgba(245, 240, 232, 0.1); min-width: 180px; transition: border-color 0.25s, background 0.25s; }
+  .contact-link:hover { border-color: var(--gold); background: rgba(200, 147, 58, 0.1); }
+  .contact-link-label { font-family: 'DM Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--gold); }
+  .contact-link-val { font-size: 0.9rem; color: rgba(245, 240, 232, 0.8); }
+
+  footer { background: #0a0907; padding: 2rem 4rem; display: flex; justify-content: space-between; align-items: center; color: rgba(245, 240, 232, 0.35); font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.1em; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    section { padding: 4rem 1.5rem; }
+    #about, #methodology { grid-template-columns: 1fr; gap: 2.5rem; }
+    .skills-grid, .projects-grid, .edu-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+
+  /* LIVE DEMOS */
+  #live-demos { background: var(--warm); }
+  #live-demos .section-title { margin-bottom: 0.8rem; }
+  .demos-intro { font-size: 0.95rem; line-height: 1.75; color: var(--text-muted); max-width: 58ch; margin-bottom: 3rem; font-style: italic; }
+  .demos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+  .demo-card { background: var(--cream); border: 1px solid rgba(200, 147, 58, 0.15); padding: 2.2rem 2rem 1.8rem; position: relative; overflow: hidden; transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s; display: flex; flex-direction: column; }
+  .demo-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.35s; }
+  .demo-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(15,14,12,0.1); border-color: rgba(200,147,58,0.4); }
+  .demo-card:hover::before { transform: scaleX(1); }
+  .demo-num { position: absolute; top: 1.2rem; right: 1.4rem; font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900; color: rgba(15,14,12,0.04); line-height: 1; pointer-events: none; }
+  .demo-type { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem; }
+  .demo-type::before { content: ''; width: 14px; height: 1px; background: var(--gold); display: inline-block; }
+  .demo-icon { font-size: 1.8rem; margin-bottom: 0.8rem; display: block; }
+  .demo-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.6rem; line-height: 1.3; }
+  .demo-desc { font-size: 0.84rem; line-height: 1.7; color: var(--text-muted); margin-bottom: 1.2rem; flex: 1; }
+  .demo-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.4rem; }
+  .demo-tag { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.08em; padding: 0.22rem 0.55rem; background: var(--ink); color: var(--cream); text-transform: uppercase; }
+  .demo-btn { display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); text-decoration: none; padding: 0.6rem 1.1rem; border: 1.5px solid var(--ink); transition: all 0.25s; margin-top: auto; width: fit-content; }
+  .demo-btn:hover { background: var(--ink); color: var(--cream); transform: translateX(3px); }
+  .demo-btn svg { width: 12px; height: 12px; }
+
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Sathish<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#live-demos">Live Demos</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="home">
+  <div class="hero-left">
+    <div class="hero-tag">Instructional Designer &amp; E-Learning Developer</div>
+    <h1 class="hero-name">Sathishkumar<br>Eswaramoorthy</h1>
+    <p class="hero-title">Crafting Digital Learning Experiences</p>
+    <p class="hero-desc">A seasoned learning professional with 10+ years of experience designing AI-enhanced e-learning solutions that transform complex knowledge into engaging, accessible training — authorized to work in the U.S.</p>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">10+</span><span class="stat-label">Years Experience</span></div>
+      <div class="stat"><span class="stat-num">8+</span><span class="stat-label">In Instructional Design</span></div>
+      <div class="stat"><span class="stat-num">15+</span><span class="stat-label">Tools Mastered</span></div>
+    </div>
+    <div class="hero-cta">
+      <a href="#experience" class="btn-primary">View Experience</a>
+      <a href="#live-demos" class="btn-outline">Live Work Samples</a>
+      <a href="#contact" class="btn-teal">Get In Touch</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hr-accent-bar"></div>
+    <div class="hr-initials">SE</div>
+    <div class="hr-content">
+      <div class="hr-quote-wrap">
+        <span class="hr-quote-mark">"</span>
+        <p class="hr-quote">Designing learning experiences that bridge the gap between <em>complex knowledge</em> and human understanding — one module at a time.</p>
+      </div>
+      <div class="award-badge">
+        <div class="award-icon">🏆</div>
+        <div class="award-text">
+          <strong>TPO People's Excellence Award</strong>
+          <span>Q2 2024 &nbsp;·&nbsp; FIS Global</span>
+        </div>
+      </div>
+      <div class="hr-auth">Authorized to work in the United States</div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="about-text">
+    <div class="section-label">About Me</div>
+    <h2 class="section-title">Where Pedagogy<br>Meets Technology</h2>
+    <p>I specialize in end-to-end learning solution design — from needs analysis and storyboarding to publishing SCORM-compliant modules and measuring learner outcomes. My work spans corporate compliance training, finance process education, university-level curriculum, and onboarding experiences across global organizations.</p>
+    <p>What sets my approach apart is a deep integration of AI-driven tools — from Synthesia avatar videos to ElevenLabs narration and Copilot-assisted content drafting — enabling faster production without sacrificing instructional quality.</p>
+  </div>
+  <div class="about-right">
+    <div class="pillar"><h4>🎯 Instructional Strategy</h4><p>ADDIE, SAM, Bloom's Taxonomy — every course is grounded in sound learning science with clear objectives and measurable outcomes.</p></div>
+    <div class="pillar"><h4>🤖 AI-Enhanced Production</h4><p>Leveraging Synthesia, ElevenLabs, Napkin, and Gamma to dramatically reduce development cycles while elevating production quality.</p></div>
+    <div class="pillar"><h4>📊 Data-Driven L&D</h4><p>Power BI dashboards built from LMS data to track completions, engagement, and compliance metrics for stakeholder reporting.</p></div>
+    <div class="pillar"><h4>♿ Accessible by Design</h4><p>All deliverables meet WCAG/Section 508 standards, ensuring inclusive learning experiences for all audiences.</p></div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="section-label">Technical Arsenal</div>
+  <h2 class="section-title">Tools &amp; Technologies</h2>
+  <div class="skills-grid">
+    <div class="skill-category">
+      <div class="skill-cat-title">Authoring &amp; Development</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Articulate Storyline 360</span>
+        <span class="skill-tag">Articulate Rise</span>
+        <span class="skill-tag">Adobe Captivate</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-cat-title">Video &amp; Animation</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Synthesia</span>
+        <span class="skill-tag">Camtasia</span>
+        <span class="skill-tag">Vyond</span>
+        <span class="skill-tag">Adobe Premiere Pro</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-cat-title">AI Productivity Tools</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Microsoft Copilot</span>
+        <span class="skill-tag">ElevenLabs</span>
+        <span class="skill-tag">Napkin AI</span>
+        <span class="skill-tag">Gamma</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-cat-title">Design &amp; Graphics</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Canva</span>
+        <span class="skill-tag">Adobe Express</span>
+        <span class="skill-tag">Adobe Illustrator</span>
+        <span class="skill-tag">GIMP</span>
+        <span class="skill-tag">Audacity</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-cat-title">Data &amp; Analytics</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Power BI</span>
+        <span class="skill-tag">Tableau</span>
+        <span class="skill-tag">SQL</span>
+        <span class="skill-tag">LMS Analytics</span>
+        <span class="skill-tag">Data Visualization</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-cat-title">Technical &amp; Web Skills</div>
+      <div class="skill-tags">
+        <span class="skill-tag">SCORM</span>
+        <span class="skill-tag">xAPI (Tin Can)</span>
+        <span class="skill-tag">LMS Administration</span>
+        <span class="skill-tag">WCAG / 508</span>
+      
+        <span class="skill-tag">HTML / CSS / JavaScript</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="section-label">Career Journey</div>
+  <h2 class="section-title">Work Experience</h2>
+  <div class="timeline">
+    <div class="job">
+      <div class="job-meta">
+        <div>
+          <div class="job-company">Freelance Instructional Designer</div>
+          <div class="job-role">Independent Consultant</div>
+          <div class="job-client">Self-Employed</div>
+        </div>
+        <span class="job-period">Oct 2025 – Present</span>
+      </div>
+      <p class="job-desc">Providing freelance instructional design and eLearning development services to clients, delivering end-to-end learning solutions independently.</p>
+      <ul class="job-bullets">
+        <li>Designing and developing custom eLearning modules, interactive scenarios, and video-based courses</li>
+        <li>Applying ADDIE and SAM methodologies to deliver high-quality, learner-centred training solutions</li>
+        <li>Leveraging AI tools including Synthesia, ElevenLabs, and Copilot to accelerate production and enhance output quality</li>
+      </ul>
+    </div>
+    <div class="job">
+      <div class="job-meta">
+        <div>
+          <div class="job-company">FIS Global</div>
+          <div class="job-role">Lead Consultant – Learning</div>
+          <div class="job-client">Client: FIS · India</div>
+        </div>
+        <span class="job-period">May 2022 – July 2025</span>
+      </div>
+      <p class="job-desc">Developed internal training content covering onboarding, compliance, and role-specific processes for FIS employees worldwide, implementing AI-driven and data-informed learning strategies at scale.</p>
+      <ul class="job-bullets">
+        <li>Produced interactive eLearning modules using Articulate Storyline &amp; Rise, Camtasia, Vyond, Synthesia, Canva, and GIMP in collaboration with SMEs and stakeholders</li>
+        <li>Implemented AI-driven video development with Synthesia to create scalable onboarding and compliance modules, enabling rapid global content delivery</li>
+        <li>Built Power BI dashboards to visualize learner progress, completion rates, and training effectiveness from LMS data (WeLearn)</li>
+        <li>Automated learning insights by integrating LMS Excel reports with Power BI for compliance tracking and onboarding performance reporting</li>
+        <li>Conducted needs analysis to identify learning gaps and designed targeted, measurable training solutions</li>
+      </ul>
+    </div>
+    <div class="job">
+      <div class="job-meta">
+        <div>
+          <div class="job-company">GP Strategies</div>
+          <div class="job-role">Instructional Systems Designer</div>
+          <div class="job-client">Client: Cargill, USA · India</div>
+        </div>
+        <span class="job-period">May 2020 – May 2022</span>
+      </div>
+      <p class="job-desc">Developed interactive eLearning modules for Cargill's global finance team covering reporting and analysis processes including trial balance, general ledger, FX exposure, and COGS.</p>
+      <ul class="job-bullets">
+        <li>Designed and developed finance process eLearning modules using Articulate Storyline and Rise</li>
+        <li>Collaborated with SMEs to transform complex financial content into clear, interactive learning experiences</li>
+        <li>Built Power BI dashboards for tracking course completion and learner engagement via LMS data</li>
+        <li>Maintained instructional consistency through structured review cycles and design standards</li>
+      </ul>
+    </div>
+    <div class="job">
+      <div class="job-meta">
+        <div>
+          <div class="job-company">Edufic Digital</div>
+          <div class="job-role">Senior Instructional Designer</div>
+          <div class="job-client">Clients: L&amp;T · Emeritus (Columbia/MIT) · BHP · Simplilearn</div>
+        </div>
+        <span class="job-period">Dec 2018 – Mar 2020</span>
+      </div>
+      <p class="job-desc">Served multiple high-profile clients across construction, higher education, mining, and ed-tech sectors, delivering diverse learning formats from WBT to ILT and university curricula.</p>
+      <ul class="job-bullets">
+        <li>Designed process-, system-, and performance-based online courses for L&amp;T employees (onsite engagement)</li>
+        <li>Developed competency-based online curricula for Columbia and MIT university students via Emeritus Management Education</li>
+        <li>Created WBTs and Standard Operating Procedures for BHP employees using Adobe Captivate</li>
+        <li>Developed comprehensive ILT materials for Simplilearn including facilitator guides, student guides, and self-running videos</li>
+        <li>Mentored junior instructional designers on ISD principles and quality standards</li>
+      </ul>
+    </div>
+    <div class="job">
+      <div class="job-meta">
+        <div>
+          <div class="job-company">RV Matrix / Hi-Tech Scientific</div>
+          <div class="job-role">Instructional Designer</div>
+          <div class="job-client">Clients: Cyient · Tata Interactive Systems · Tata Class Edge</div>
+        </div>
+        <span class="job-period">May 2017 – Nov 2018</span>
+      </div>
+      <p class="job-desc">Built a strong foundation in eLearning development serving data science, community college, and K-12 education clients across India and the USA.</p>
+      <ul class="job-bullets">
+        <li>Developed interactive eLearning modules and storyboards for Cyient data scientists and engineers</li>
+        <li>Built storyboards, virtual labs, and PDFs for Central Piedmont Community College (USA) through Tata Interactive Systems</li>
+        <li>Designed and developed K-12 courseware in Adobe Flash CS5 for Tata Class Edge</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-meta">
+        <div>
+          <div class="job-company">Skyparc Energy India</div>
+          <div class="job-role">Engineer</div>
+          <div class="job-client">Formerly Sky Solar's · India</div>
+        </div>
+        <span class="job-period">Dec 2012 – Jul 2015</span>
+      </div>
+      <p class="job-desc">Managed solar installation projects end-to-end — building the communication, documentation, and structured training skills that underpin a career in learning design.</p>
+      <ul class="job-bullets">
+        <li>Coordinated rooftop and on-site solar projects across engineering, procurement, and client teams</li>
+        <li>Prepared technical documentation, compliance paperwork, and audit-ready project reports</li>
+        <li>Created process flow documents and SOPs for new joiners — an early foray into structured content development</li>
+        <li>Conducted client briefings and walkthroughs on solar system usage and troubleshooting</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<section id="projects">
+  <div class="section-label">Highlighted Work</div>
+  <h2 class="section-title">Key Projects</h2>
+  <div class="projects-grid">
+    <div class="project-card">
+      <div class="project-client">FIS Global · 2022–2025</div>
+      <h3 class="project-title">AI-Powered Compliance Training at Scale</h3>
+      <p class="project-body">Implemented Synthesia avatar-led compliance and onboarding modules for a global workforce, significantly reducing production time while enabling rapid content updates and multi-region delivery.</p>
+      <div class="project-tools">
+        <span class="tool-chip">Synthesia</span><span class="tool-chip">Articulate Rise</span><span class="tool-chip">Storyline</span><span class="tool-chip">Power BI</span>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-client">FIS Global · 2023–2025</div>
+      <h3 class="project-title">LMS Learning Analytics Dashboard</h3>
+      <p class="project-body">Built interactive Power BI dashboards integrating WeLearn LMS data to provide L&amp;D stakeholders with real-time visibility into completion rates, learner engagement, and compliance status by department.</p>
+      <div class="project-tools">
+        <span class="tool-chip">Power BI</span><span class="tool-chip">Excel</span><span class="tool-chip">LMS Data</span><span class="tool-chip">SQL</span>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-client">Cargill via GP Strategies · 2020–2022</div>
+      <h3 class="project-title">Finance Process eLearning Suite</h3>
+      <p class="project-body">Developed a comprehensive suite of interactive modules covering trial balance, general ledger, FX exposure, COGS, and aging analysis for Cargill's global finance teams operating in SAP environments.</p>
+      <div class="project-tools">
+        <span class="tool-chip">Articulate Storyline</span><span class="tool-chip">Rise</span><span class="tool-chip">Power BI</span>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-client">Emeritus / Columbia &amp; MIT · 2019–2020</div>
+      <h3 class="project-title">University Competency-Based Curriculum</h3>
+      <p class="project-body">Designed and developed online university-level curricula for Columbia and MIT students through Emeritus Management Education, applying rigorous ISD standards for higher education audiences.</p>
+      <div class="project-tools">
+        <span class="tool-chip">Storyboarding</span><span class="tool-chip">ISD Principles</span><span class="tool-chip">QA Review</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- LIVE DEMOS -->
+<section id="live-demos">
+  <div class="section-label">Interactive Portfolio</div>
+  <h2 class="section-title">Live Work Samples</h2>
+  <p class="demos-intro">Click any sample to experience it live in your browser — no download required. Each project demonstrates a distinct instructional design approach and methodology.</p>
+
+  <div class="demos-grid">
+
+    <div class="demo-card">
+      <div class="demo-num">01</div>
+      <div class="demo-type">eLearning Course</div>
+      <span class="demo-icon">🗣️</span>
+      <div class="demo-title">Effective Communication at Work</div>
+      <p class="demo-desc">10-slide interactive course featuring hotspot activities, scenario-based quizzes, drag-and-drop interactions, and SBI feedback framework — built in Storyline style.</p>
+      <div class="demo-tags">
+        <span class="demo-tag">Interactive</span><span class="demo-tag">Scenario-Based</span><span class="demo-tag">Storyline-Style</span>
+      </div>
+      <a class="demo-btn" href="https://saisathish26.github.io/Effective-Commu/elearning_communication" target="_blank" rel="noopener">
+        Launch
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-num">02</div>
+      <div class="demo-type">Game-Based Learning</div>
+      <span class="demo-icon">🎮</span>
+      <div class="demo-title">CyberQuest Security Adventure</div>
+      <p class="demo-desc">RPG-style cybersecurity awareness game with 5 challenge zones, inventory system, boss battle mechanics, and a 12-trophy achievement system.</p>
+      <div class="demo-tags">
+        <span class="demo-tag">Gamification</span><span class="demo-tag">Cybersecurity</span><span class="demo-tag">RPG-Style</span>
+      </div>
+      <a class="demo-btn" href="https://saisathish26.github.io/Game-based/cyberquest_game" target="_blank" rel="noopener">
+        Launch
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-num">03</div>
+      <div class="demo-type">Scenario-Based</div>
+      <span class="demo-icon">⚖️</span>
+      <div class="demo-title">The Right Call — Workplace Ethics</div>
+      <p class="demo-desc">Branching scenario visual novel with 5 ethical dilemmas, a Trust Meter mechanic, CSS character illustrations, and a personalised certificate of completion.</p>
+      <div class="demo-tags">
+        <span class="demo-tag">Branching</span><span class="demo-tag">Ethics</span><span class="demo-tag">Visual Novel</span>
+      </div>
+      <a class="demo-btn" href="https://saisathish26.github.io/Scenario-based/ethics_scenario_elearning" target="_blank" rel="noopener">
+        Launch
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-num">04</div>
+      <div class="demo-type">Animated Video Course</div>
+      <span class="demo-icon">🎬</span>
+      <div class="demo-title">Time Management Mastery</div>
+      <p class="demo-desc">Vyond-style animated eLearning video with CSS characters, Web Audio background music, 9 animated scenes, and full playback and scene navigation controls.</p>
+      <div class="demo-tags">
+        <span class="demo-tag">Animation</span><span class="demo-tag">Video-Style</span><span class="demo-tag">Vyond-Style</span>
+      </div>
+      <a class="demo-btn" href="https://saisathish26.github.io/Video-course/timemaster" target="_blank" rel="noopener">
+        Launch
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-num">05</div>
+      <div class="demo-type">Game-Based Learning</div>
+      <span class="demo-icon">⏰</span>
+      <div class="demo-title">Time Quest — Management Game</div>
+      <p class="demo-desc">Articulate Storyline-style quiz game with 10 scenario questions, 20-second timer per question, 3-life system, live scoring, and a confetti results screen.</p>
+      <div class="demo-tags">
+        <span class="demo-tag">Quiz Game</span><span class="demo-tag">Storyline-Style</span><span class="demo-tag">Gamification</span>
+      </div>
+      <a class="demo-btn" href="https://saisathish26.github.io/Time-Mang_Game-Based/Time%20Mang_game" target="_blank" rel="noopener">
+        Launch
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-num">06</div>
+      <div class="demo-type">Hard Skills · ERP Training</div>
+      <span class="demo-icon">📊</span>
+      <div class="demo-title">SAP FI-AP Accounts Payable</div>
+      <p class="demo-desc">Corporate hard-skills module with SAP screen simulation, T-code matching game, F110 payment run walkthrough, AP dashboard hotspot, and XP progress system.</p>
+      <div class="demo-tags">
+        <span class="demo-tag">SAP</span><span class="demo-tag">Simulation</span><span class="demo-tag">Hard Skills</span>
+      </div>
+      <a class="demo-btn" href="https://saisathish26.github.io/SAP/sap_ap_elearning" target="_blank" rel="noopener">
+        Launch
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<section id="methodology">
+  <div>
+    <div class="section-label">Approach</div>
+    <h2 class="section-title">Design<br>Methodology</h2>
+    <p style="color: rgba(245,240,232,0.55); font-size: 0.9rem; line-height: 1.75; margin-top: 1rem;">Every learning solution is built on proven instructional frameworks, ensuring strategic alignment from analysis through evaluation.</p>
+  </div>
+  <div class="method-list">
+    <div class="method-item">
+      <div class="method-abbr">ADDIE</div>
+      <div>
+        <div class="method-name">Analysis, Design, Development, Implementation, Evaluation</div>
+        <div class="method-desc">The gold-standard framework guiding systematic course development from needs analysis through iterative evaluation and continuous improvement.</div>
+      </div>
+    </div>
+    <div class="method-item">
+      <div class="method-abbr">SAM</div>
+      <div>
+        <div class="method-name">Successive Approximation Model</div>
+        <div class="method-desc">An agile, iterative approach enabling rapid prototyping and stakeholder feedback loops to accelerate time-to-delivery without sacrificing quality.</div>
+      </div>
+    </div>
+    <div class="method-item">
+      <div class="method-abbr">BT</div>
+      <div>
+        <div class="method-name">Bloom's Taxonomy</div>
+        <div class="method-desc">Applied to craft measurable learning objectives across cognitive levels — from foundational recall through synthesis — ensuring outcomes are observable and achievable.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="section-label">Academic Background</div>
+  <h2 class="section-title">Education &amp; Certifications</h2>
+  <div class="edu-grid">
+    <div class="edu-card">
+      <div class="edu-degree">M.Tech — Power Electronics &amp; Drives Engineering</div>
+      <div class="edu-school">Karunya University, India</div>
+      <div class="edu-year">2012 · Grade: 76%</div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-degree">B.E. — Electrical &amp; Electronics Engineering</div>
+      <div class="edu-school">Anna University, India</div>
+      <div class="edu-year">2010 · Grade: 76%</div>
+    </div>
+  </div>
+  <div class="cert-list">
+    <div class="cert-item">
+      <span class="cert-icon">🎓</span>
+      <div><div class="cert-name">Instructional Design for E-Learning</div><div class="cert-issuer">Udemy Certification</div></div>
+    </div>
+    <div class="cert-item">
+      <span class="cert-icon">🎬</span>
+      <div><div class="cert-name">TechSmith Camtasia — Explorer &amp; Voyager</div><div class="cert-issuer">TechSmith Certification</div></div>
+    </div>
+    <div class="cert-item">
+      <span class="cert-icon">★</span>
+      <div><div class="cert-name">TPO People's Excellence Award — Q2 2024</div><div class="cert-issuer">FIS Global · Recognized for demonstrating excellence, living FIS values, and delivering an outstanding client experience</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="contact-bg-text">Connect</div>
+  <div style="position: relative; z-index: 2;">
+    <div class="section-label" style="justify-content:center;">Let's Connect</div>
+    <h2 class="section-title">Open to New<br><em style="font-style:italic; color: var(--gold);">Opportunities</em></h2>
+    <p style="color: rgba(245,240,232,0.6); font-size: 1rem; max-width: 480px; margin: 1rem auto 0; line-height: 1.75;">Based in Tempe, AZ · Authorized to work in the U.S. · Available for full-time, contract, and remote roles in instructional design and e-learning development.</p>
+  </div>
+  <div class="contact-links">
+    <a href="tel:+14802349765" class="contact-link">
+      <span class="contact-link-label">Phone</span>
+      <span class="contact-link-val">+1 (480) 234-9765</span>
+    </a>
+    <a href="mailto:sathishelearning@gmail.com" class="contact-link">
+      <span class="contact-link-label">Email</span>
+      <span class="contact-link-val">sathishelearning@gmail.com</span>
+    </a>
+    <a href="http://linkedin.com/in/sathishkumar-eswaramoorthy" target="_blank" class="contact-link">
+      <span class="contact-link-label">LinkedIn</span>
+      <span class="contact-link-val">sathishkumar-eswaramoorthy</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Sathishkumar Eswaramoorthy &nbsp;·&nbsp; Instructional Designer &nbsp;·&nbsp; Tempe, AZ</span>
+  <span>Authorized to work in the U.S.</span>
+</footer>
+
+</body>
+</html>
