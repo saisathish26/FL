@@ -276,15 +276,196 @@
 
   @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-  @media (max-width: 900px) {
-    nav { padding: 1rem 1.5rem; }
-    .nav-links { display: none; }
-    .hero { grid-template-columns: 1fr; }
+  /* ══════════════════════════════════════════
+     RESPONSIVE — Desktop · Tablet · Mobile
+     xl  : > 1280px  (large desktop)
+     lg  : 1024–1279px (laptop)
+     md  : 768–1023px  (tablet)
+     sm  : 480–767px   (large phone)
+     xs  : < 480px     (small phone)
+  ══════════════════════════════════════════ */
+
+  /* ── Large desktop ── */
+  @media (min-width: 1280px) {
+    nav { padding: 1.2rem 5rem; }
+    section { padding: 6rem 5rem; }
+    #contact { padding: 8rem 5rem; }
+    footer { padding: 2rem 5rem; }
+  }
+
+  /* ── Laptop (1024–1279px) ── */
+  @media (max-width: 1279px) and (min-width: 1024px) {
+    nav { padding: 1.2rem 2.5rem; }
+    section { padding: 5rem 2.5rem; }
+    #contact { padding: 7rem 2.5rem; }
+    footer { padding: 1.75rem 2.5rem; }
+    .hero-left { padding: 7rem 2.5rem 4rem 2.5rem; }
+    .hr-content { padding: 4rem 2.5rem 3rem; }
+    .hr-initials { font-size: 14rem; }
+  }
+
+  /* ── Tablet (768–1023px) ── */
+  @media (max-width: 1023px) {
+    nav { padding: 1rem 2rem; }
+    .nav-links { gap: 1.5rem; }
+    .nav-links a { font-size: 0.67rem; letter-spacing: 0.1em; }
+
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-left { padding: 7rem 2rem 4rem; }
     .hero-right { display: none; }
-    section { padding: 4rem 1.5rem; }
-    #about, #methodology { grid-template-columns: 1fr; gap: 2.5rem; }
-    .skills-grid, .projects-grid, .edu-grid { grid-template-columns: 1fr; }
-    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    .hero-stats { gap: 2rem; }
+    .hero-cta { gap: 0.75rem; }
+
+    section { padding: 4.5rem 2rem; }
+    #contact { padding: 6rem 2rem; }
+    footer { padding: 1.5rem 2rem; }
+
+    #about { grid-template-columns: 1fr; gap: 3rem; }
+    .skills-grid { grid-template-columns: repeat(2, 1fr); }
+    .projects-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    .demos-grid { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+    #methodology { grid-template-columns: 1fr; gap: 2.5rem; }
+    .edu-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+
+    .contact-links { gap: 1rem; }
+    .contact-link { min-width: 150px; padding: 1.2rem 1.5rem; }
+  }
+
+  /* ── Hamburger button (hidden on desktop, shown via JS on mobile) ── */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+    background: none;
+    border: none;
+  }
+  .nav-hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--ink);
+    border-radius: 2px;
+    transition: all 0.25s;
+  }
+
+  /* ── Mobile drawer ── */
+  .nav-drawer {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(245,240,232,0.98);
+    backdrop-filter: blur(16px);
+    z-index: 200;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+  }
+  .nav-drawer.open { display: flex; }
+  .nav-drawer a {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--ink);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-drawer a:hover { color: var(--gold); }
+  .nav-drawer-close {
+    position: absolute;
+    top: 1.2rem; right: 1.5rem;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+    line-height: 1;
+  }
+
+  /* ── Large phone (480–767px) ── */
+  @media (max-width: 767px) {
+    nav { padding: 0.9rem 1.25rem; }
+    .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+
+    .hero { min-height: auto; }
+    .hero-left { padding: 6rem 1.25rem 3.5rem; }
+    .hero-right { display: none; }
+    .hero-name { font-size: clamp(2.2rem, 9vw, 3.4rem); }
+    .hero-desc { font-size: 0.95rem; }
+    .hero-stats { gap: 1.75rem; flex-wrap: wrap; }
+    .stat-num { font-size: 1.9rem; }
+    .hero-cta { flex-direction: column; gap: 0.65rem; }
+    .btn-primary, .btn-outline, .btn-teal { width: 100%; text-align: center; padding: 0.9rem 1.5rem; box-sizing: border-box; }
+
+    section { padding: 3.5rem 1.25rem; }
+    #contact { padding: 5rem 1.25rem; }
+    footer { padding: 1.25rem; flex-direction: column; gap: 0.4rem; text-align: center; }
+
+    #about { grid-template-columns: 1fr; gap: 2.5rem; }
+    .skills-grid { grid-template-columns: 1fr; gap: 1rem; }
+    .projects-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+    .demos-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+    #methodology { grid-template-columns: 1fr; gap: 2rem; }
+    .edu-grid { grid-template-columns: 1fr; }
+
+    .method-item { grid-template-columns: 4.5rem 1fr; gap: 1rem; padding: 1rem 1.1rem; }
+    .method-abbr { font-size: 1.1rem; }
+
+    .timeline { padding-left: 1.75rem; }
+    .job::before { left: -2.15rem; }
+    .job-meta { flex-wrap: wrap; gap: 0.4rem; }
+
+    .contact-links { flex-direction: column; align-items: center; gap: 0.75rem; }
+    .contact-link { width: 100%; max-width: 360px; }
+
+    .demo-btn { width: 100%; justify-content: center; }
+  }
+
+  /* ── Small phone (< 480px) ── */
+  @media (max-width: 479px) {
+    nav { padding: 0.85rem 1rem; }
+    .hero-left { padding: 5.5rem 1rem 3rem; }
+    .hero-name { font-size: clamp(2rem, 11vw, 2.8rem); }
+    .hero-tag { font-size: 0.65rem; }
+    .hero-title { font-size: 1rem; }
+    .hero-desc { font-size: 0.9rem; line-height: 1.65; }
+    .hero-stats { gap: 1.4rem; }
+    .stat-num { font-size: 1.75rem; }
+    .stat-label { font-size: 0.62rem; }
+
+    section { padding: 3rem 1rem; }
+    #contact { padding: 4rem 1rem; }
+    .section-title { font-size: clamp(1.7rem, 7vw, 2.2rem); }
+
+    .skill-category { padding: 1.5rem; }
+    .project-card { padding: 1.75rem 1.5rem; }
+    .demo-card { padding: 1.75rem 1.5rem 1.4rem; }
+    .edu-card { padding: 1.5rem; }
+    .pillar { padding: 1.2rem; }
+
+    .job-company { font-size: 1.2rem; }
+    .job-meta { flex-direction: column; gap: 0.4rem; }
+    .job-period { align-self: flex-start; }
+
+    .contact-links { gap: 0.6rem; }
+    footer { font-size: 0.6rem; padding: 1rem; }
+  }
+
+  /* ── Touch: disable hover-only effects ── */
+  @media (hover: none) {
+    .btn-primary:hover, .btn-outline:hover, .btn-teal:hover { transform: none; }
+    .pillar:hover { transform: none; box-shadow: none; border-color: var(--gold); }
+    .project-card:hover { transform: none; box-shadow: none; }
+    .project-card:hover::after { width: 0; }
+    .demo-card:hover { transform: none; box-shadow: none; }
+    .demo-card:hover::before { transform: scaleX(0); }
+    .skill-tag:hover { background: rgba(245,240,232,0.08); color: rgba(245,240,232,0.8); border-color: rgba(245,240,232,0.12); }
+    .skill-category:hover { border-color: rgba(245,240,232,0.1); background: rgba(245,240,232,0.05); }
   }
 
   /* LIVE DEMOS */
@@ -328,7 +509,21 @@
     <li><a href="#live-demos">Live Demos</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- Mobile nav drawer -->
+<div class="nav-drawer" id="navDrawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <button class="nav-drawer-close" id="navDrawerClose" aria-label="Close menu">✕</button>
+  <a href="#about">About</a>
+  <a href="#skills">Skills</a>
+  <a href="#experience">Experience</a>
+  <a href="#projects">Projects</a>
+  <a href="#live-demos">Live Demos</a>
+  <a href="#contact">Contact</a>
+</div>
 
 <section class="hero" id="home">
   <div class="hero-left">
@@ -363,6 +558,7 @@
         </div>
       </div>
       <div class="hr-auth">Authorized to work in the United States</div>
+      <div class="hr-auth">IVP Fingerprint Clearance Card</div>
     </div>
   </div>
 </section>
@@ -1262,6 +1458,10 @@ function updateFooter(){var cfg={view:{dot:'ds-view',lbl:'ls-view'},try:{dot:'ds
       <span class="cert-icon">★</span>
       <div><div class="cert-name">TPO People's Excellence Award — Q2 2024</div><div class="cert-issuer">FIS Global · Recognized for demonstrating excellence, living FIS values, and delivering an outstanding client experience</div></div>
     </div>
+    <div class="cert-item">
+      <span class="cert-icon">🔏</span>
+      <div><div class="cert-name">IVP Fingerprint Clearance Card</div><div class="cert-issuer">Arizona Department of Public Safety (AZDPS) · Current IVP Fingerprint Clearance Card — background-verified and fully compliant for employment in educational settings</div></div>
+    </div>
   </div>
 </section>
 
@@ -1292,6 +1492,51 @@ function updateFooter(){var cfg={view:{dot:'ds-view',lbl:'ls-view'},try:{dot:'ds
   <span>© 2026 Sathishkumar Eswaramoorthy · Instructional Designer</span>
   <span>Phoenix, AZ · Authorized to work in the U.S.</span>
 </footer>
+
+<script>
+(function() {
+  var hamburger = document.getElementById('navHamburger');
+  var drawer = document.getElementById('navDrawer');
+  var closeBtn = document.getElementById('navDrawerClose');
+
+  function syncHamburger() {
+    if (window.innerWidth <= 767) {
+      hamburger.style.display = 'flex';
+    } else {
+      hamburger.style.display = 'none';
+      drawer.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  }
+
+  syncHamburger();
+  window.addEventListener('resize', syncHamburger);
+
+  hamburger.addEventListener('click', function() {
+    drawer.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+
+  closeBtn.addEventListener('click', function() {
+    drawer.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+
+  drawer.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('click', function() {
+      drawer.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && drawer.classList.contains('open')) {
+      drawer.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
+})();
+</script>
 
 </body>
 </html>
