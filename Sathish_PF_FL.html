@@ -258,6 +258,8 @@
   .cert-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 0.1rem; }
   .cert-name { font-size: 0.9rem; font-weight: 500; }
   .cert-issuer { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem; }
+  .cert-item--highlight { border-left-color: var(--gold); background: rgba(200,147,58,0.1); }
+  .cert-item--highlight .cert-icon { color: var(--gold); }
 
   /* CONTACT */
   #contact { background: var(--ink); color: var(--cream); text-align: center; padding: 8rem 4rem; position: relative; overflow: hidden; }
@@ -1553,10 +1555,38 @@ function updateFooter(){var cfg={view:{dot:'ds-view',lbl:'ls-view'},try:{dot:'ds
       <div><div class="cert-name">TechSmith Camtasia — Explorer &amp; Voyager</div><div class="cert-issuer">TechSmith Certification</div></div>
     </div>
     <div class="cert-item">
+      <span class="cert-icon">🤖</span>
+      <div><div class="cert-name">Essential Skills in Generative AI for Creatives</div><div class="cert-issuer">Professional Certificate · Adobe (LinkedIn)</div></div>
+    </div>
+    <div class="cert-item">
+      <span class="cert-icon">💬</span>
+      <div><div class="cert-name">Introduction to LLMs and Prompt Engineering</div><div class="cert-issuer">Pearson (LinkedIn)</div></div>
+    </div>
+    <div class="cert-item">
+      <span class="cert-icon">⚡</span>
+      <div><div class="cert-name">Build Your Generative AI Productivity Skills</div><div class="cert-issuer">Professional Certificate · Microsoft (LinkedIn)</div></div>
+    </div>
+    <div class="cert-item">
+      <span class="cert-icon">✍️</span>
+      <div><div class="cert-name">Business Writing</div><div class="cert-issuer">Professional Certificate · Grammarly (LinkedIn)</div></div>
+    </div>
+    <div class="cert-item">
+      <span class="cert-icon">📊</span>
+      <div><div class="cert-name">Career Essentials in Data Analysis</div><div class="cert-issuer">Professional Certificate · Microsoft (LinkedIn)</div></div>
+    </div>
+    <div class="cert-item">
+      <span class="cert-icon">🧠</span>
+      <div><div class="cert-name">AI Fluency for Educators</div><div class="cert-issuer">Anthropic</div></div>
+    </div>
+    <div class="cert-item">
+      <span class="cert-icon">📈</span>
+      <div><div class="cert-name">Power BI for Beginners</div><div class="cert-issuer">Simplilearn</div></div>
+    </div>
+    <div class="cert-item cert-item--highlight">
       <span class="cert-icon">★</span>
       <div><div class="cert-name">TPO People's Excellence Award — Q2 2024</div><div class="cert-issuer">FIS Global · Recognized for demonstrating excellence, living FIS values, and delivering an outstanding client experience</div></div>
     </div>
-    <div class="cert-item">
+    <div class="cert-item cert-item--highlight">
       <span class="cert-icon">🔏</span>
       <div><div class="cert-name">IVP Fingerprint Clearance Card</div><div class="cert-issuer">Arizona Department of Public Safety (AZDPS) · Current IVP Fingerprint Clearance Card — background-verified and fully compliant for employment in educational settings</div></div>
     </div>
@@ -1587,7 +1617,7 @@ function updateFooter(){var cfg={view:{dot:'ds-view',lbl:'ls-view'},try:{dot:'ds
 </section>
 
 <footer>
-  <span>© 2026 Sathishkumar Eswaramoorthy · Instructional Designer</span>
+  <span>© Sathishkumar Eswaramoorthy · Instructional Designer</span>
   <span>Phoenix, AZ · Authorized to work in the U.S.</span>
 </footer>
 
