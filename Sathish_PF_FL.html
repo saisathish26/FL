@@ -483,21 +483,28 @@
   .demo-thumb { width: calc(100% + 4rem); margin: -2.2rem -2rem 1.2rem; display: block; height: 170px; object-fit: cover; object-position: top; border-bottom: 1px solid rgba(200,147,58,0.2); }
 
   /* SUB-CATEGORY TABS */
-  .subcat-tabs { display: flex; gap: 0.75rem; flex-wrap: wrap; margin: 2.2rem 0 2.4rem; border-bottom: 1px solid rgba(200,147,58,0.25); padding-bottom: 0; }
-  .subcat-tab { background: transparent; border: none; border-bottom: 2px solid transparent; font-family: 'DM Mono', monospace; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); padding: 0.9rem 0.3rem; margin-right: 1.8rem; cursor: pointer; transition: color 0.2s, border-color 0.2s; display: flex; align-items: center; gap: 0.55rem; }
+  .subcat-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 2.2rem 0 2.6rem; }
+  .subcat-tab { background: var(--cream); border: 1.5px solid rgba(200,147,58,0.3); font-family: 'DM Mono', monospace; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); padding: 1.3rem 1rem; cursor: pointer; transition: all 0.25s; display: flex; align-items: center; justify-content: center; gap: 0.6rem; position: relative; overflow: hidden; }
+  .subcat-tab::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
   .subcat-tab .subcat-count { font-size: 0.65rem; background: rgba(200,147,58,0.12); color: var(--gold); border-radius: 99px; padding: 0.1rem 0.55rem; }
-  .subcat-tab:hover { color: var(--ink); }
-  .subcat-tab.active { color: var(--ink); border-bottom-color: var(--gold); }
-  .subcat-tab.active .subcat-count { background: var(--gold); color: var(--cream); }
+  .subcat-tab:hover { color: var(--ink); border-color: rgba(200,147,58,0.6); transform: translateY(-3px); box-shadow: 0 10px 24px rgba(15,14,12,0.08); }
+  .subcat-tab.active { color: var(--cream); background: var(--ink); border-color: var(--ink); }
+  .subcat-tab.active::before { transform: scaleX(1); }
+  .subcat-tab.active .subcat-count { background: var(--gold); color: var(--ink); }
   .subcat-panel { display: none; }
   .subcat-panel.active { display: block; animation: fadeUp 0.4s ease; }
+  .subcat-prompt { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 0.6rem; padding: 4.5rem 2rem; }
+  .subcat-prompt.hidden { display: none; }
+  .subcat-prompt-icon { font-size: 1.8rem; opacity: 0.55; }
+  .subcat-prompt-title { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.35rem; color: var(--ink); }
+  .subcat-prompt-desc { font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); }
   .subcat-empty { border: 1.5px dashed rgba(200,147,58,0.35); padding: 3.5rem 2rem; text-align: center; color: var(--text-muted); font-family: 'DM Sans', sans-serif; }
   .subcat-empty-icon { font-size: 2.2rem; margin-bottom: 1rem; display: block; opacity: 0.6; }
   .subcat-empty-title { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.25rem; color: var(--ink); margin-bottom: 0.5rem; }
   .subcat-empty-desc { font-size: 0.92rem; max-width: 420px; margin: 0 auto; line-height: 1.6; }
   @media (max-width: 640px) {
-    .subcat-tabs { gap: 0; }
-    .subcat-tab { margin-right: 1.1rem; font-size: 0.7rem; }
+    .subcat-tabs { grid-template-columns: 1fr; gap: 0.7rem; }
+    .subcat-tab { font-size: 0.7rem; padding: 1rem; }
   }
   .demo-type { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem; }
   .demo-type::before { content: ''; width: 14px; height: 1px; background: var(--gold); display: inline-block; }
@@ -847,10 +854,10 @@
     </div>
     <div class="project-card">
       <div class="project-client">Freelance · 2025–Present</div>
-      <h3 class="project-title">AI-Engineered Content &amp; Automation Pipelines</h3>
-      <p class="project-body">Built custom prompt-engineered pipelines integrating multiple LLM APIs (Groq, Cerebras, OpenRouter, Google AI Studio) to automate eLearning content generation, data cleaning, and SQL query drafting for client projects.</p>
+      <h3 class="project-title">AI Teaching Assistant — Multi-Agent Tutoring Platform</h3>
+      <p class="project-body">Built a modular, multi-agent educational chatbot powered by Google Gemini, delivering dedicated Physics, Chemistry, and Math tutoring for O'Level and A'Level students. Designed dual interfaces — a Streamlit web app and a terminal CLI — with isolated subject-agent context, dynamic model switching, and persistent session memory to prevent prompt pollution across subjects.</p>
       <div class="project-tools">
-        <span class="tool-chip">LLM APIs</span><span class="tool-chip">Prompt Engineering</span><span class="tool-chip">Groq</span><span class="tool-chip">OpenRouter</span>
+        <span class="tool-chip">Gemini API</span><span class="tool-chip">Multi-Agent Systems</span><span class="tool-chip">Streamlit</span><span class="tool-chip">Pydantic</span>
       </div>
     </div>
   </div>
@@ -870,9 +877,15 @@
     <button class="subcat-tab" data-subcat="data-analysis" onclick="switchDemoTab('data-analysis')">
       Data Analysis <span class="subcat-count">0</span>
     </button>
-    <button class="subcat-tab active" data-subcat="elearning" onclick="switchDemoTab('elearning')">
+    <button class="subcat-tab" data-subcat="elearning" onclick="switchDemoTab('elearning')">
       eLearning <span class="subcat-count">10</span>
     </button>
+  </div>
+
+  <div class="subcat-prompt" id="subcat-prompt">
+    <span class="subcat-prompt-icon">👆</span>
+    <div class="subcat-prompt-title">Click a tab above to explore samples in that category</div>
+    <div class="subcat-prompt-desc">AI Apps · Data Analysis · eLearning</div>
   </div>
 
   <div class="subcat-panel" id="subcat-ai-apps">
@@ -905,7 +918,7 @@
     </div>
   </div>
 
-  <div class="subcat-panel active" id="subcat-elearning">
+  <div class="subcat-panel" id="subcat-elearning">
   <div class="demos-grid">
 
     <div class="demo-card">
@@ -1218,6 +1231,7 @@
     document.querySelectorAll('.subcat-panel').forEach(function(panel) {
       panel.classList.toggle('active', panel.id === 'subcat-' + name);
     });
+    document.getElementById('subcat-prompt').classList.add('hidden');
   }
 </script>
 
