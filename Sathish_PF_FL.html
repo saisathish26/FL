@@ -512,6 +512,8 @@
   .demo-btn { display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); text-decoration: none; padding: 0.6rem 1.1rem; border: 1.5px solid var(--ink); transition: all 0.25s; margin-top: auto; width: fit-content; }
   .demo-btn:hover { background: var(--ink); color: var(--cream); transform: translateX(3px); }
   .demo-btn svg { width: 12px; height: 12px; }
+  .demo-btn-group { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: auto; }
+  .demo-btn-group .demo-btn { margin-top: 0; }
 
   /* DOC LINKS (storyboard / design doc) */
   .demo-doc-links { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.65rem; }
@@ -880,14 +882,20 @@
       <div class="demo-type">AI Finance Assistant</div>
       <span class="demo-icon">🧾</span>
       <div class="demo-title">Smart Expense Assistant</div>
-      <p class="demo-desc">A Streamlit-powered Python app for automated financial tracking and receipt management. Features a responsive multi-tab UI, Gemini Vision-based receipt parsing via the Google GenAI SDK, automated Google Drive folder batch syncing for remote receipt ingestion, interactive financial charts with Plotly Express, and Pandas-backed local JSON storage for data processing and persistence.</p>
+      <p class="demo-desc">A Streamlit-powered Python app for automated financial tracking and receipt management, optimized for deployment on both local machines and Streamlit Cloud. Features a responsive multi-tab UI, Gemini Vision-based receipt parsing via the Google GenAI SDK, automated Google Drive folder batch syncing for remote receipt ingestion, interactive financial charts with Plotly Express, and Pandas-backed JSON storage for data processing and persistence. In Streamlit Cloud, a separate upload box is included to add your Google Service Account credentials, enabling seamless automatic synchronization of receipts from Google Drive. To test the app, simply provide your own Gemini API key and Google Cloud credentials.</p>
       <div class="demo-tags">
         <span class="demo-tag">Gemini Vision</span><span class="demo-tag">Streamlit</span><span class="demo-tag">Plotly</span>
       </div>
-      <a class="demo-btn" href="https://drive.google.com/file/d/1eibOyYurkWvewRJC5vodoDkXKgX-F0V9/view?usp=sharing" target="_blank" rel="noopener">
-        View Demo
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
+      <div class="demo-btn-group">
+        <a class="demo-btn" href="https://drive.google.com/file/d/1eibOyYurkWvewRJC5vodoDkXKgX-F0V9/view?usp=sharing" target="_blank" rel="noopener">
+          View Demo
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a class="demo-btn" href="https://smart-expense-assistant-new.streamlit.app/" target="_blank" rel="noopener">
+          Launch
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
     </div>
 
     <div class="demo-card" id="demo-card-lifeadmin-ai">
