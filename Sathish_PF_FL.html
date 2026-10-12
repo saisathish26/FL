@@ -474,7 +474,6 @@
   #live-demos { background: var(--warm); }
   #live-demos .section-title { margin-bottom: 0.8rem; }
   .demos-intro { font-size: 0.95rem; line-height: 1.75; color: var(--text-muted); max-width: 58ch; margin-bottom: 1.6rem; font-style: italic; }
-  .subcat-hint { font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.9rem; display: flex; align-items: center; gap: 0.5rem; }
   .demos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
   .demo-card { background: var(--cream); border: 1px solid rgba(200, 147, 58, 0.15); padding: 2.2rem 2rem 1.8rem; position: relative; overflow: hidden; transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s; display: flex; flex-direction: column; }
   .demo-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.35s; }
@@ -483,24 +482,63 @@
   .demo-num { position: absolute; top: 1.2rem; right: 1.4rem; font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900; color: rgba(15,14,12,0.04); line-height: 1; pointer-events: none; }
   .demo-thumb { width: calc(100% + 4rem); margin: -2.2rem -2rem 1.2rem; display: block; height: 170px; object-fit: cover; object-position: top; border-bottom: 1px solid rgba(200,147,58,0.2); }
 
-  /* SUB-CATEGORY TABS */
-  .subcat-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 2.2rem 0 2.6rem; }
-  .subcat-tab { background: var(--cream); border: 1.5px solid rgba(200,147,58,0.3); font-family: 'DM Mono', monospace; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); padding: 1.3rem 1rem; cursor: pointer; transition: all 0.25s; display: flex; align-items: center; justify-content: center; gap: 0.6rem; position: relative; overflow: hidden; }
-  .subcat-tab::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
-  .subcat-tab .subcat-count { font-size: 0.65rem; background: rgba(200,147,58,0.12); color: var(--gold); border-radius: 99px; padding: 0.1rem 0.55rem; }
-  .subcat-tab:hover { color: var(--ink); border-color: rgba(200,147,58,0.6); transform: translateY(-3px); box-shadow: 0 10px 24px rgba(15,14,12,0.08); }
-  .subcat-tab.active { color: var(--cream); background: var(--ink); border-color: var(--ink); }
-  .subcat-tab.active::before { transform: scaleX(1); }
-  .subcat-tab.active .subcat-count { background: var(--gold); color: var(--ink); }
-  .subcat-panel { display: none; }
-  .subcat-panel.active { display: block; animation: fadeUp 0.4s ease; }
-  .subcat-empty { border: 1.5px dashed rgba(200,147,58,0.35); padding: 3.5rem 2rem; text-align: center; color: var(--text-muted); font-family: 'DM Sans', sans-serif; }
-  .subcat-empty-icon { font-size: 2.2rem; margin-bottom: 1rem; display: block; opacity: 0.6; }
-  .subcat-empty-title { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.25rem; color: var(--ink); margin-bottom: 0.5rem; }
-  .subcat-empty-desc { font-size: 0.92rem; max-width: 420px; margin: 0 auto; line-height: 1.6; }
-  @media (max-width: 640px) {
-    .subcat-tabs { grid-template-columns: 1fr; gap: 0.7rem; }
-    .subcat-tab { font-size: 0.7rem; padding: 1rem; }
+  /* CATEGORY PICKER — click a card to reveal its samples */
+  .cat-prompt { display: flex; align-items: center; gap: 0.6rem; font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin: 2rem 0 1.1rem; }
+  .cat-prompt::before { content: ''; width: 2rem; height: 1px; background: var(--gold); }
+  .cat-prompt .cat-prompt-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); animation: catPulse 1.8s ease-in-out infinite; }
+  @keyframes catPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(200,147,58,0.55); } 50% { box-shadow: 0 0 0 9px rgba(200,147,58,0); } }
+
+  .cat-picker { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 1.2rem; scroll-margin-top: 6rem; }
+  .cat-card { all: unset; box-sizing: border-box; cursor: pointer; position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 1.6rem; min-height: 250px; padding: 2.1rem 2.2rem 1.8rem; background: var(--cream); border: 1.5px solid rgba(200,147,58,0.3); color: var(--ink); isolation: isolate; transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background 0.35s ease, color 0.35s ease; }
+  .cat-card:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+  .cat-card::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); transform: scaleX(0); transform-origin: left; transition: transform 0.45s ease; z-index: 2; }
+  .cat-card::after { content: ''; position: absolute; width: 320px; height: 320px; right: -110px; top: -130px; border-radius: 50%; background: radial-gradient(circle, rgba(200,147,58,0.22), rgba(200,147,58,0) 68%); transition: transform 0.6s ease, opacity 0.4s ease; z-index: -1; }
+  .cat-card:hover { transform: translateY(-6px); border-color: var(--gold); box-shadow: 0 20px 44px rgba(15,14,12,0.13); }
+  .cat-card:hover::before { transform: scaleX(1); }
+  .cat-card:hover::after { transform: scale(1.25) translate(-12px, 12px); }
+  .cat-num { position: absolute; right: 1.6rem; bottom: -1.2rem; font-family: 'Playfair Display', serif; font-weight: 900; font-size: 7.5rem; line-height: 1; color: rgba(15,14,12,0.045); pointer-events: none; transition: color 0.35s; z-index: -1; }
+  .cat-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .cat-icon { width: 58px; height: 58px; display: grid; place-items: center; border: 1.5px solid rgba(200,147,58,0.45); background: rgba(200,147,58,0.1); color: var(--gold); transition: transform 0.4s ease, background 0.35s, color 0.35s, border-color 0.35s; }
+  .cat-icon svg { width: 28px; height: 28px; }
+  .cat-card:hover .cat-icon { transform: rotate(-6deg) scale(1.06); }
+  .cat-count { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); background: rgba(200,147,58,0.12); border-radius: 99px; padding: 0.35rem 0.9rem; transition: background 0.35s, color 0.35s; }
+  .cat-body { display: block; }
+  .cat-title { display: block; font-family: 'Playfair Display', serif; font-size: clamp(1.7rem, 2.6vw, 2.3rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; margin-bottom: 0.7rem; }
+  .cat-title em { font-style: italic; color: var(--gold); }
+  .cat-desc { display: block; font-size: 0.95rem; line-height: 1.65; color: var(--text-muted); max-width: 40ch; transition: color 0.35s; }
+  .cat-foot { margin-top: auto; display: flex; align-items: center; gap: 0.7rem; font-family: 'DM Mono', monospace; font-size: 0.74rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); }
+  .cat-cta-arrow { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; border: 1.5px solid var(--ink); transition: transform 0.35s ease, background 0.3s, color 0.3s, border-color 0.3s; }
+  .cat-cta-arrow svg { width: 15px; height: 15px; }
+  .cat-card:hover .cat-cta-arrow { background: var(--ink); color: var(--cream); transform: translateY(3px); }
+  .cat-cta-open { display: none; }
+
+  .cat-card[aria-selected="true"] { background: var(--ink); color: var(--cream); border-color: var(--ink); box-shadow: 0 22px 48px rgba(15,14,12,0.25); }
+  .cat-card[aria-selected="true"]::before { transform: scaleX(1); }
+  .cat-card[aria-selected="true"]::after { opacity: 1; background: radial-gradient(circle, rgba(232,184,90,0.30), rgba(232,184,90,0) 68%); }
+  .cat-card[aria-selected="true"] .cat-num { color: rgba(245,240,232,0.06); }
+  .cat-card[aria-selected="true"] .cat-icon { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+  .cat-card[aria-selected="true"] .cat-count { background: var(--gold); color: var(--ink); }
+  .cat-card[aria-selected="true"] .cat-desc { color: rgba(245,240,232,0.7); }
+  .cat-card[aria-selected="true"] .cat-foot { color: var(--gold-light); }
+  .cat-card[aria-selected="true"] .cat-cta-arrow { border-color: var(--gold-light); transform: rotate(180deg); }
+  .cat-card[aria-selected="true"]:hover .cat-cta-arrow { background: var(--gold-light); color: var(--ink); transform: rotate(180deg) translateY(3px); }
+  .cat-card[aria-selected="true"] .cat-cta-closed { display: none; }
+  .cat-card[aria-selected="true"] .cat-cta-open { display: inline; }
+
+  .subcat-panel { display: none; scroll-margin-top: 6rem; }
+  .subcat-panel.active { display: block; animation: fadeUp 0.5s ease; }
+  .panel-head { display: flex; align-items: center; gap: 1rem; margin: 2.2rem 0 1.6rem; font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); }
+  .panel-head::before { content: ''; width: 2rem; height: 1px; background: var(--gold); }
+  .panel-head::after { content: ''; flex: 1; height: 1px; background: rgba(200,147,58,0.3); }
+  .panel-head strong { color: var(--ink); font-weight: 500; }
+  @media (max-width: 767px) {
+    .cat-picker { grid-template-columns: 1fr; gap: 1rem; }
+    .cat-card { min-height: 0; padding: 1.7rem 1.5rem 1.5rem; gap: 1.2rem; }
+    .cat-num { font-size: 5.5rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cat-card, .cat-card::before, .cat-card::after, .cat-icon, .cat-cta-arrow { transition: none; }
+    .cat-prompt .cat-prompt-dot { animation: none; }
   }
   .demo-type { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem; }
   .demo-type::before { content: ''; width: 14px; height: 1px; background: var(--gold); display: inline-block; }
@@ -857,23 +895,40 @@
 <section id="live-demos">
   <div class="section-label">Interactive Portfolio</div>
   <h2 class="section-title">Live Work Samples</h2>
-  <p class="demos-intro">Explore live samples across AI applications, data analysis, and eLearning — click any card to experience the project in your browser or view a walkthrough demo, no download required. eLearning samples also include storyboards, design documents, and job aids for you to explore, and please note that no voiceover has been added to those samples.</p>
+  <p class="demos-intro">Explore live samples across AI applications and eLearning — pick a category below, then click any card to experience the project in your browser or view a walkthrough demo, no download required. eLearning samples also include storyboards, design documents, and job aids for you to explore, and please note that no voiceover has been added to those samples.</p>
 
-  <div class="subcat-hint">Click a tab to explore samples in that category</div>
+  <div class="cat-prompt" id="cat-prompt"><span class="cat-prompt-dot"></span>Choose a category to view the work samples</div>
 
-  <div class="subcat-tabs">
-    <button class="subcat-tab active" data-subcat="ai-apps" onclick="switchDemoTab('ai-apps')">
-      AI Apps <span class="subcat-count">5</span>
+  <div class="cat-picker" id="cat-picker" role="tablist" aria-label="Work sample categories">
+    <button class="cat-card" role="tab" id="tab-ai-apps" aria-selected="false" aria-controls="subcat-ai-apps" data-subcat="ai-apps" onclick="switchDemoTab('ai-apps')">
+      <span class="cat-num" aria-hidden="true">01</span>
+      <span class="cat-top">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="14" height="14" rx="2.5"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/><path d="M12 9.2l.9 1.9 1.9.9-1.9.9-.9 1.9-.9-1.9-1.9-.9 1.9-.9z"/></svg></span>
+        <span class="cat-count">5 samples</span>
+      </span>
+      <span class="cat-body">
+        <span class="cat-title">AI <em>Apps</em></span>
+        <span class="cat-desc">Gemini-powered Streamlit tools for tutoring, finance tracking, inbox management, course automation and meal planning.</span>
+      </span>
+      <span class="cat-foot"><span class="cat-cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span><span class="cat-cta-closed">View AI apps</span><span class="cat-cta-open">Hide AI apps</span></span>
     </button>
-    <button class="subcat-tab" data-subcat="data-analysis" onclick="switchDemoTab('data-analysis')">
-      Data Analysis <span class="subcat-count">0</span>
-    </button>
-    <button class="subcat-tab" data-subcat="elearning" onclick="switchDemoTab('elearning')">
-      eLearning <span class="subcat-count">10</span>
+
+    <button class="cat-card" role="tab" id="tab-elearning" aria-selected="false" aria-controls="subcat-elearning" data-subcat="elearning" onclick="switchDemoTab('elearning')">
+      <span class="cat-num" aria-hidden="true">02</span>
+      <span class="cat-top">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11.2V16c0 1.4 2.7 3 6 3s6-1.6 6-3v-4.8"/><path d="M22 9v6"/></svg></span>
+        <span class="cat-count">10 samples</span>
+      </span>
+      <span class="cat-body">
+        <span class="cat-title">e<em>Learning</em></span>
+        <span class="cat-desc">Interactive modules, game-based learning, scenario training and software simulations, with storyboards and job aids.</span>
+      </span>
+      <span class="cat-foot"><span class="cat-cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span><span class="cat-cta-closed">View eLearning</span><span class="cat-cta-open">Hide eLearning</span></span>
     </button>
   </div>
 
-  <div class="subcat-panel active" id="subcat-ai-apps">
+  <div class="subcat-panel" id="subcat-ai-apps" role="tabpanel" aria-labelledby="tab-ai-apps">
+  <div class="panel-head"><strong>AI Apps</strong> · 5 live samples</div>
   <div class="demos-grid">
 
     <div class="demo-card" id="demo-card-expense-assistant">
@@ -965,15 +1020,8 @@
   </div>
   </div>
 
-  <div class="subcat-panel" id="subcat-data-analysis">
-    <div class="subcat-empty">
-      <span class="subcat-empty-icon">📊</span>
-      <div class="subcat-empty-title">Data Analysis — Coming Soon</div>
-      <p class="subcat-empty-desc">Data analysis project samples will be added to this section shortly.</p>
-    </div>
-  </div>
-
-  <div class="subcat-panel" id="subcat-elearning">
+  <div class="subcat-panel" id="subcat-elearning" role="tabpanel" aria-labelledby="tab-elearning">
+  <div class="panel-head"><strong>eLearning</strong> · 10 samples</div>
   <div class="demos-grid">
 
     <div class="demo-card">
@@ -1280,12 +1328,25 @@
 
 <script>
   function switchDemoTab(name) {
-    document.querySelectorAll('.subcat-tab').forEach(function(btn) {
-      btn.classList.toggle('active', btn.getAttribute('data-subcat') === name);
+    var cards = document.querySelectorAll('.cat-card');
+    var panels = document.querySelectorAll('.subcat-panel');
+    var target = document.getElementById('subcat-' + name);
+    var alreadyOpen = target.classList.contains('active');
+
+    // Clicking the open category again collapses it
+    cards.forEach(function(btn) {
+      var on = !alreadyOpen && btn.getAttribute('data-subcat') === name;
+      btn.setAttribute('aria-selected', on ? 'true' : 'false');
     });
-    document.querySelectorAll('.subcat-panel').forEach(function(panel) {
-      panel.classList.toggle('active', panel.id === 'subcat-' + name);
+    panels.forEach(function(panel) {
+      panel.classList.toggle('active', !alreadyOpen && panel === target);
     });
+    document.getElementById('cat-prompt').style.display = alreadyOpen ? '' : 'none';
+
+    if (!alreadyOpen) {
+      var anchor = window.innerWidth <= 767 ? target : document.getElementById('cat-picker');
+      setTimeout(function() { anchor.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 60);
+    }
   }
 </script>
 
